@@ -44,4 +44,18 @@ Networking for the diplomatiq world.
 
 ---
 
+## Basics
+
+The application is implemented with the Angular framework.
+
+After something is pushed to the `develop` branch, the branch is immediately deployed to the `develop` slot of the `diplomatiq-frontend` resource in Azure: [https://app.diplomatiq.org/?x-ms-routing-name=develop](https://app.diplomatiq.org/?x-ms-routing-name=develop)
+
+Same for the `master` branch, but after a push, the branch is deployed to the `staging` slot, which gets auto-swapped into production in order to reach the zen of zero-downtime deployment.
+
+## Development
+
+See [CONTRIBUTING.md](https://github.com/Diplomatiq/diplomatiq-frontend/blob/develop/CONTRIBUTING.md) for details.
+
+---
+
 Copyright (c) 2018 Diplomatiq
