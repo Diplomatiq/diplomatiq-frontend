@@ -1,0 +1,22 @@
+name: Build and publish to Azure
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build-and-publish:
+        name: 'Build and publish'
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+            - name: Publish to Azure
+              uses: azure/webapps-deploy@v1
+              with:
+                  app-name: 'app-diplomatiqfrontend-prod-001'
+                  slot-name: 'production'
+                  publish-profile: ${{ secrets.AzureAppService_PublishProfile_bb07b11d109e46e79b3d941ac9bb41c5 }}
+                  package: src
