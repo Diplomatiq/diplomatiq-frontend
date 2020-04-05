@@ -12,7 +12,7 @@
             },
             "root": "",
             "sourceRoot": "src",
-            "prefix": "app",
+            "prefix": "diplomatiq-frontend",
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
@@ -41,6 +41,9 @@
                             "extractCss": true,
                             "namedChunks": false,
                             "aot": true,
+                            "i18nMissingTranslation": "error",
+                            "assets": ["src/web.config"],
+                            "deployUrl": "",
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true,
@@ -85,7 +88,8 @@
                         "karmaConfig": "karma.conf.js",
                         "assets": ["src/favicon.ico", "src/assets"],
                         "styles": ["src/styles.scss"],
-                        "scripts": []
+                        "scripts": [],
+                        "codeCoverage": true
                     }
                 },
                 "lint": {

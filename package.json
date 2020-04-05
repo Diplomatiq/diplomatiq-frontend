@@ -6,9 +6,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-dist": "ng build --configuration=production",
     "test": "ng test",
+    "test-ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "e2e-ci": "ng e2e --protractor-config=e2e/protractor-ci.conf.js",
     "version": "node --experimental-modules scripts/sync-sonar-version.mjs && conventional-changelog -p angular -i CHANGELOG.md -s && git add sonar-project.properties CHANGELOG.md"
   },
   "repository": {
