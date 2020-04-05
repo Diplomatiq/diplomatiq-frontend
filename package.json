@@ -66,6 +66,7 @@
     "@angular-eslint/template-parser": "0.0.1-alpha.27"
   },
   "husky": {
-    "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+    "pre-push": "npm run lint && npm run test-ci"
   }
 }

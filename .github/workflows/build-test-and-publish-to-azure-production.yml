@@ -1,4 +1,4 @@
-name: Build, test and publish to Azure
+name: Build, test and publish to Azure (production)
 
 on:
     push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
     build-test-and-publish:
-        name: 'Build, test and publish'
+        name: 'Build, test and publish to Azure'
         runs-on: ubuntu-latest
 
         steps:
