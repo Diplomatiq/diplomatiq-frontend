@@ -1,0 +1,3 @@
+{
+    "extends": ["@diplomatiq/eslint-config-tslib"]
+}

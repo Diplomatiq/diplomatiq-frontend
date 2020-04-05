@@ -1,0 +1,27 @@
+{
+  "name": "diplomatiq-frontend",
+  "version": "0.0.0",
+  "description": "Networking for the diplomatiq world.",
+  "main": "src/index.html",
+  "scripts": {
+    "version": "node --experimental-modules scripts/sync-sonar-version.mjs && conventional-changelog -p angular -i CHANGELOG.md -s && git add sonar-project.properties CHANGELOG.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Diplomatiq/diplomatiq-frontend.git"
+  },
+  "author": "Diplomatiq",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Diplomatiq/diplomatiq-frontend/issues"
+  },
+  "homepage": "https://app.diplomatiq.org",
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@diplomatiq/eslint-config-tslib": "^3.0.0",
+    "prettier": "^1.19.1"
+  },
+  "husky": {
+    "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+  }
+}
