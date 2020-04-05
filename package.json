@@ -2,8 +2,13 @@
   "name": "diplomatiq-frontend",
   "version": "0.0.0",
   "description": "Networking for the diplomatiq world.",
-  "main": "src/index.html",
   "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
     "version": "node --experimental-modules scripts/sync-sonar-version.mjs && conventional-changelog -p angular -i CHANGELOG.md -s && git add sonar-project.properties CHANGELOG.md"
   },
   "repository": {
@@ -16,10 +21,46 @@
     "url": "https://github.com/Diplomatiq/diplomatiq-frontend/issues"
   },
   "homepage": "https://app.diplomatiq.org",
+  "dependencies": {
+    "@angular-eslint/schematics": "0.0.1-alpha.27",
+    "@angular/animations": "~8.2.5",
+    "@angular/common": "~8.2.5",
+    "@angular/compiler": "~8.2.5",
+    "@angular/core": "~8.2.5",
+    "@angular/forms": "~8.2.5",
+    "@angular/platform-browser": "~8.2.5",
+    "@angular/platform-browser-dynamic": "~8.2.5",
+    "@angular/router": "~8.2.5",
+    "rxjs": "~6.4.0",
+    "tslib": "^1.10.0",
+    "zone.js": "~0.9.1"
+  },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.803.4",
+    "@angular/cli": "~8.3.4",
+    "@angular/compiler-cli": "~8.2.5",
+    "@angular/language-service": "~8.2.5",
     "@commitlint/cli": "^8.3.5",
-    "@diplomatiq/eslint-config-tslib": "^3.0.0",
-    "prettier": "^1.19.1"
+    "@diplomatiq/eslint-config-angular": "^1.0.0",
+    "@types/node": "~8.9.4",
+    "@types/jasmine": "~3.3.8",
+    "@types/jasminewd2": "~2.0.3",
+    "codelyzer": "^5.0.0",
+    "jasmine-core": "~3.4.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~4.1.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "~2.0.1",
+    "karma-jasmine": "~2.0.1",
+    "karma-jasmine-html-reporter": "^1.4.0",
+    "prettier": "^1.19.1",
+    "protractor": "~5.4.0",
+    "ts-node": "~7.0.0",
+    "typescript": "~3.5.3",
+    "@angular-eslint/builder": "0.0.1-alpha.27",
+    "@angular-eslint/eslint-plugin": "0.0.1-alpha.27",
+    "@angular-eslint/eslint-plugin-template": "0.0.1-alpha.27",
+    "@angular-eslint/template-parser": "0.0.1-alpha.27"
   },
   "husky": {
     "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
