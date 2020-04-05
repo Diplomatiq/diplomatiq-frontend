@@ -1,0 +1,29 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+    lint-build-test-scan:
+        name: Lint, build, test, scan
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout push or pull request HEAD
+              uses: actions/checkout@v2
+            - name: Set up Node.js version
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 13
+            - name: Install dependencies
+              run: npm ci
+            - name: Lint the code
+              run: npm run lint
+            - name: Run unit tests
+              run: npm run test-ci
+            - name: Run end-to-end tests
+              run: npm run e2e-ci
+            - name: Scan the code with SonarCloud
+              uses: sonarsource/sonarcloud-github-action@v1.1
+              env:
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

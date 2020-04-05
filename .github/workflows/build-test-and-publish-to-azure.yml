@@ -6,7 +6,7 @@ on:
             - master
 
 jobs:
-    build-and-publish:
+    build-test-and-publish:
         name: 'Build, test and publish'
         runs-on: ubuntu-latest
 
