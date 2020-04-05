@@ -21,11 +21,12 @@ jobs:
               run: npm ci
             - name: Prepare distribution deployment artefact
               run: npm run build-dist
-            - uses: actions/upload-artifact@v1
+            - name: Store distribution deployment artefact
+              uses: actions/upload-artifact@v1
               with:
                   name: diplomatiq-frontend-dist-${{ github.ref }}-${{ github.sha }}
                   path: dist/diplomatiq-frontend
-            - name: Publish to Azure
+            - name: Publish distribution deployment artefact to Azure
               uses: azure/webapps-deploy@v1
               with:
                   app-name: 'app-diplomatiqfrontend-prod-001'
