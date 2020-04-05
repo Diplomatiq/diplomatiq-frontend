@@ -19,8 +19,12 @@ jobs:
                   node-version: 13
             - name: Install dependencies
               run: npm ci
-            - name: Prepare deployment artefact
+            - name: Prepare distribution deployment artefact
               run: npm run build-dist
+            - uses: actions/upload-artifact@v1
+              with:
+                  name: diplomatiq-frontend
+                  path: dist/diplomatiq-frontend
             - name: Publish to Azure
               uses: azure/webapps-deploy@v1
               with:
