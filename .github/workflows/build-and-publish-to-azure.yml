@@ -23,7 +23,7 @@ jobs:
               run: npm run build-dist
             - uses: actions/upload-artifact@v1
               with:
-                  name: diplomatiq-frontend
+                  name: diplomatiq-frontend-dist-${{ github.ref }}-${{ github.sha }}
                   path: dist/diplomatiq-frontend
             - name: Publish to Azure
               uses: azure/webapps-deploy@v1
