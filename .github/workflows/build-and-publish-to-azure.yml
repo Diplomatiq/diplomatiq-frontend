@@ -24,7 +24,7 @@ jobs:
             - name: Store distribution deployment artefact
               uses: actions/upload-artifact@v1
               with:
-                  name: diplomatiq-frontend-dist-${{ github.ref }}-${{ github.sha }}
+                  name: diplomatiq-frontend-dist-${{ github.sha }}
                   path: dist/diplomatiq-frontend
             - name: Publish distribution deployment artefact to Azure
               uses: azure/webapps-deploy@v1
