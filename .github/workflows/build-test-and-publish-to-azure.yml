@@ -1,4 +1,4 @@
-name: Build and publish to Azure
+name: Build, test and publish to Azure
 
 on:
     push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
     build-and-publish:
-        name: 'Build and publish'
+        name: 'Build, test and publish'
         runs-on: ubuntu-latest
 
         steps:
@@ -19,6 +19,12 @@ jobs:
                   node-version: 13
             - name: Install dependencies
               run: npm ci
+            - name: Lint the code
+              run: npm run lint
+            - name: Run unit tests
+              run: npm run test-ci
+            - name: Run end-to-end tests
+              run: npm run e2e-ci
             - name: Prepare distribution deployment artefact
               run: npm run build-dist
             - name: Store distribution deployment artefact

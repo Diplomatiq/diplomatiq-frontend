@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    title = 'diplomatiq-frontend';
+    public readonly title = 'diplomatiq-frontend';
 }
