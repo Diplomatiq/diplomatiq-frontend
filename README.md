@@ -1,4 +1,6 @@
-# diplomatiq-frontend
+<p align="center">
+  <img src="logo.png" width="500px">
+</p>
 
 Networking for the diplomatiq world.
 
