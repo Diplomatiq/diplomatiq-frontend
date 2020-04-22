@@ -63,7 +63,7 @@
     "@angular-eslint/builder": "0.0.1-alpha.27",
     "@angular-eslint/eslint-plugin": "0.0.1-alpha.27",
     "@angular-eslint/eslint-plugin-template": "0.0.1-alpha.27",
-    "@angular-eslint/template-parser": "0.0.1-alpha.27"
+    "@angular-eslint/template-parser": "0.0.1-alpha.29"
   },
   "husky": {
     "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
