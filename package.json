@@ -25,7 +25,7 @@
   },
   "homepage": "https://app.diplomatiq.org",
   "dependencies": {
-    "@angular-eslint/schematics": "0.0.1-alpha.27",
+    "@angular-eslint/schematics": "0.0.1-alpha.29",
     "@angular/animations": "~8.2.5",
     "@angular/common": "~8.2.5",
     "@angular/compiler": "~8.2.5",
