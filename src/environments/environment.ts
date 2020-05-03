@@ -13,5 +13,6 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+    apiUrl: 'http://localhost:8080',
     production: false,
 };

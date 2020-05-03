@@ -6,6 +6,6 @@ export class AppPage {
     }
 
     public async getTitleText(): Promise<string> {
-        return element(by.css('app-root .content span')).getText();
+        return element(by.css('diplomatiq-frontend .content span')).getText();
     }
 }

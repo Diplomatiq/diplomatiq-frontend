@@ -1,0 +1,64 @@
+<div id="login">
+    <form (ngSubmit)="submit()">
+        <div class="form-group">
+            <label for="emailAddress">Email address</label>
+            <input
+                type="email"
+                [(ngModel)]="emailAddress"
+                name="emailAddress"
+                class="form-control"
+                id="emailAddress"
+                aria-describedby="emailAddress"
+                placeholder="Enter your email address"
+            />
+            <small id="emailHelper" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group" *ngIf="signup">
+            <label for="emailAddress">Name</label>
+            <div class="form-row">
+                <div class="col">
+                    <input
+                        type="text"
+                        [(ngModel)]="firstName"
+                        name="firstName"
+                        class="form-control"
+                        placeholder="First name"
+                    />
+                </div>
+                <div class="col">
+                    <input
+                        type="text"
+                        [(ngModel)]="lastName"
+                        name="lastName"
+                        class="form-control"
+                        placeholder="Last name"
+                    />
+                </div>
+            </div>
+            <small id="emailHelper" class="form-text text-muted">{{ nameHelper }}</small>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input
+                type="password"
+                [(ngModel)]="password"
+                name="password"
+                class="form-control"
+                id="password"
+                placeholder="Enter your password"
+            />
+            <small id="passwordHelper" class="form-text text-muted"
+                >Choose a strong password. It is protected by Scrypt and SRP, but you still have to choose a strong
+                one.</small
+            >
+        </div>
+
+        <div *ngIf="!signup">
+            <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Log in</button>
+            <button class="btn btn-link" (click)="switchToSignUp()">Sign up</button>
+        </div>
+        <div *ngIf="signup">
+            <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Sign up</button>
+        </div>
+    </form>
+</div>

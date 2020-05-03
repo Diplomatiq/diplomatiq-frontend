@@ -1,1 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+$color-1: #4477bb;
+$color-2: #c6d5f0;
+$color-3: #88abd2;
+$color-4: #22222c;
+$color-5: #ffffff;
+$color-6: #00aa3e;
+$color-7: #f76500;
+$color-8: #225dac;
+$color-9: #6644bb;
+$color-10: #dd1e44;
+
+$theme-colors: (
+    'primary': $color-9,
+    'secondary': $color-4,
+    'success': $color-6,
+    'danger': $color-7,
+    'warning': $color-7,
+    'info': $color-3,
+);
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+@import '../node_modules/bootstrap/scss/bootstrap';

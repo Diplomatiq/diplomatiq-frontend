@@ -17,7 +17,13 @@ const packageJsonPath = join(currentDir, '..', 'package.json');
 const packageJsonContents = readFileSync(packageJsonPath, { encoding: 'utf-8' });
 const packageJson = JSON.parse(packageJsonContents);
 
+const packageJsonVersion = packageJson.version;
+
 const sonarPropsPath = join(currentDir, '..', 'sonar-project.properties');
 let sonarProps = readFileSync(sonarPropsPath, { encoding: 'utf-8' });
-sonarProps = sonarProps.replace(sonarVersionRegex, `$1${packageJson.version}`);
+sonarProps = sonarProps.replace(sonarVersionRegex, `$1${packageJsonVersion}`);
 writeFileSync(sonarPropsPath, sonarProps, { encoding: 'utf-8' });
+
+const clientVersionTsPath = join(currentDir, 'src', 'app', 'constants', 'clientVersion.ts');
+const clientVersionTs = `export const clientVersion = '${packageJsonVersion}'`;
+writeFileSync(clientVersionTsPath, clientVersionTs, { encoding: 'utf-8' });
