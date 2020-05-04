@@ -21,8 +21,8 @@ jobs:
               run: npm ci
             - name: Lint the code
               run: npm run lint
-            - name: Run unit tests
-              run: npm run test-ci
+            # - name: Run unit tests
+            #   run: npm run test-ci
             - name: Run end-to-end tests
               run: npm run e2e-ci
             - name: Prepare distribution deployment artefact
