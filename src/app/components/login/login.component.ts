@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { SignupService } from '../../services/signup.service';
 
-type LoginComponentState = 'login' | 'signup';
-
 @Component({
     selector: 'diplomatiq-frontend-login',
     templateUrl: './login.component.html',
@@ -17,10 +15,12 @@ export class LoginComponent {
     public firstName = '';
     public lastName = '';
 
-    public constructor(private readonly loginService: LoginService, private readonly signupService: SignupService) {}
+    public get heading(): string {
+        return this.signup ? 'Sign up for Diplomatiq' : 'Log in to Diplomatiq';
+    }
 
-    public switchToSignUp(): void {
-        this.signup = true;
+    public get subheading(): string {
+        return this.signup ? 'Experience the power of the diplomatiq networking.' : 'Welcome back!';
     }
 
     public get nameHelper(): string {
@@ -33,6 +33,12 @@ export class LoginComponent {
         }
 
         return 'Welcome aboard!';
+    }
+
+    public constructor(private readonly loginService: LoginService, private readonly signupService: SignupService) {}
+
+    public switchToSignUp(): void {
+        this.signup = true;
     }
 
     public validateForm(): boolean {

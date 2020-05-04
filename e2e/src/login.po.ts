@@ -1,11 +1,11 @@
 import { browser, by, element } from 'protractor';
 
-export class AppPage {
+export class LoginPage {
     public async navigateTo(): Promise<void> {
         await browser.get(browser.baseUrl);
     }
 
     public async getTitleText(): Promise<string> {
-        return element(by.css('diplomatiq-frontend .content span')).getText();
+        return element(by.css('#login h1')).getText();
     }
 }

@@ -1,16 +1,16 @@
 import { browser, logging } from 'protractor';
-import { AppPage } from './app.po';
+import { LoginPage } from './login.po';
 
-describe('workspace-project App', (): void => {
-    let page: AppPage;
+describe('Login page', (): void => {
+    let page: LoginPage;
 
     beforeEach((): void => {
-        page = new AppPage();
+        page = new LoginPage();
     });
 
-    it('should display welcome message', (): void => {
+    it('should display login message', (): void => {
         page.navigateTo();
-        expect(page.getTitleText()).toEqual('diplomatiq-frontend app is running!');
+        expect(page.getTitleText()).toEqual('Log in to Diplomatiq');
     });
 
     afterEach(

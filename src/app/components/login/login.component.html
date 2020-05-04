@@ -1,4 +1,7 @@
 <div id="login">
+    <h1>{{ heading }}</h1>
+    <p class="text-muted">{{ subheading }}</p>
+    <hr />
     <form (ngSubmit)="submit()">
         <div class="form-group">
             <label for="emailAddress">Email address</label>
@@ -11,10 +14,12 @@
                 aria-describedby="emailAddress"
                 placeholder="Enter your email address"
             />
-            <small id="emailHelper" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <small *ngIf="signup" id="emailHelper" class="form-text text-muted"
+                >We'll never share your email with anyone else.</small
+            >
         </div>
         <div class="form-group" *ngIf="signup">
-            <label for="emailAddress">Name</label>
+            <label>Name</label>
             <div class="form-row">
                 <div class="col">
                     <input
@@ -22,7 +27,7 @@
                         [(ngModel)]="firstName"
                         name="firstName"
                         class="form-control"
-                        placeholder="First name"
+                        placeholder="Enter your first name"
                     />
                 </div>
                 <div class="col">
@@ -31,11 +36,11 @@
                         [(ngModel)]="lastName"
                         name="lastName"
                         class="form-control"
-                        placeholder="Last name"
+                        placeholder="Enter your last name"
                     />
                 </div>
             </div>
-            <small id="emailHelper" class="form-text text-muted">{{ nameHelper }}</small>
+            <small id="nameHelper" class="form-text text-muted">{{ nameHelper }}</small>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
@@ -47,11 +52,13 @@
                 id="password"
                 placeholder="Enter your password"
             />
-            <small id="passwordHelper" class="form-text text-muted"
-                >Choose a strong password. It is protected by Scrypt and SRP, but you still have to choose a strong
-                one.</small
+            <small *ngIf="signup" id="passwordHelper" class="form-text text-muted"
+                >Your password is protected by Scrypt and the SRP protocol. But you still have to
+                <strong>choose a strong one!</strong></small
             >
         </div>
+
+        <hr />
 
         <div *ngIf="!signup">
             <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Log in</button>
