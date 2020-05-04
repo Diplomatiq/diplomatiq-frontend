@@ -6,10 +6,17 @@ import { AppComponent } from '../components/app/app.component';
 import { LoginComponent } from '../components/login/login.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { NotificationsComponent } from '../components/notification/notifications.component';
+import { ValidateEmailAddressComponent } from '../components/validate-email-address/validate-email-address.component';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-    declarations: [AppComponent, NavbarComponent, LoginComponent, NotificationsComponent],
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        LoginComponent,
+        NotificationsComponent,
+        ValidateEmailAddressComponent,
+    ],
     imports: [BrowserModule, AppRoutingModule, FormsModule, NgbModule],
     providers: [],
     bootstrap: [AppComponent],
