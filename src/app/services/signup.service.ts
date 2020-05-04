@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
 import { RandomGenerator } from '@diplomatiq/crypto-random';
 import * as srp6Client from 'secure-remote-password/client';
-import { RegisterUserV1RequestPasswordStretchingAlgorithmEnum } from '../../openapi';
+import { RegisterUserV1RequestPasswordStretchingAlgorithmEnum } from '../../openapi/api';
 import { ApiService } from './api.service';
 import { CryptoService } from './crypto.service';
 

@@ -10,7 +10,7 @@ import {
     SessionMethodsPasswordElevatedSessionApi,
     SessionMethodsRegularSessionApi,
     UnauthenticatedMethodsApi,
-} from '../../openapi';
+} from '../../openapi/api';
 import { DiplomatiqAuthenticationScheme } from '../types/diplomatiqAuthenticationScheme';
 import { HeadersProviderService } from './headersProvider.service';
 

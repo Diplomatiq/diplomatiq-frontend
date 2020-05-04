@@ -6,7 +6,7 @@ import {
     GetDeviceContainerKeyV1Response,
     RequestContext,
     UnauthenticatedMethodsApi,
-} from '../../openapi';
+} from '../../openapi/api';
 import { clientId } from '../constants/clientId';
 
 @Injectable({

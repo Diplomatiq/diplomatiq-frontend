@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
-import { HTTPHeaders } from '../../openapi/index';
+import { HTTPHeaders } from '../../openapi/api/index';
 import { clientId } from '../constants/clientId';
 import { DiplomatiqAuthenticationScheme } from '../types/diplomatiqAuthenticationScheme';
 import { CryptoService } from './crypto.service';
