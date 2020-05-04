@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
 import { HTTPHeaders } from '../../openapi/api/index';
-import { clientId } from '../constants/clientId';
 import { DiplomatiqAuthenticationScheme } from '../types/diplomatiqAuthenticationScheme';
+import { BaseHeadersProviderService } from './baseHeadersProvider.service';
 import { CryptoService } from './crypto.service';
 import { DeviceContainerService } from './deviceContainer.service';
 
@@ -14,6 +14,7 @@ export class HeadersProviderService {
     private readonly stringConverter = new DefaultStringConverter();
 
     public constructor(
+        private readonly baseHeadersProviderService: BaseHeadersProviderService,
         private readonly deviceContainerService: DeviceContainerService,
         private readonly cryptoService: CryptoService,
     ) {}
@@ -39,8 +40,7 @@ export class HeadersProviderService {
     }
 
     private unauthenticated(_url: string, request: RequestInit): void {
-        const headers = this.getHeaders(request);
-        this.provideBaseHeaders(headers);
+        this.baseHeadersProviderService.provideHeaders(request);
     }
 
     private async authenticationSessionSignatureV1(
@@ -48,8 +48,7 @@ export class HeadersProviderService {
         url: string,
         request: RequestInit,
     ): Promise<void> {
-        const headers = this.getHeaders(request);
-        this.provideBaseHeaders(headers);
+        const headers = this.baseHeadersProviderService.provideHeaders(request);
 
         headers['AuthenticationSessionId'] = await this.deviceContainerService.getAuthenticationSessionId();
 
@@ -73,8 +72,7 @@ export class HeadersProviderService {
         url: string,
         request: RequestInit,
     ): Promise<void> {
-        const headers = this.getHeaders(request);
-        this.provideBaseHeaders(headers);
+        const headers = this.baseHeadersProviderService.provideHeaders(request);
 
         headers['DeviceId'] = await this.deviceContainerService.getDeviceId();
 
@@ -98,8 +96,7 @@ export class HeadersProviderService {
         url: string,
         request: RequestInit,
     ): Promise<void> {
-        const headers = this.getHeaders(request);
-        this.provideBaseHeaders(headers);
+        const headers = this.baseHeadersProviderService.provideHeaders(request);
 
         headers['DeviceId'] = await this.deviceContainerService.getDeviceId();
         headers['SessionId'] = await this.deviceContainerService.getSessionId();
@@ -124,11 +121,6 @@ export class HeadersProviderService {
             request.headers = {};
         }
         return request.headers as HTTPHeaders;
-    }
-
-    private provideBaseHeaders(headers: HTTPHeaders): void {
-        headers['ClientId'] = clientId;
-        headers['Instant'] = new Date().toISOString();
     }
 
     private async getRequestSignatureBase64(

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { DefaultStringConverter } from '@diplomatiq/convertibles';
+import { RandomGenerator } from '@diplomatiq/crypto-random';
 import * as scrypt from 'scrypt-async';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CryptoService {
+    public readonly randomGenerator = new RandomGenerator();
+
     private readonly subtleCrypto = window.crypto.subtle;
-    private readonly stringConverter = new DefaultStringConverter();
 
     public async sha256(payload: Uint8Array): Promise<Uint8Array> {
         const arrayBuffer = await this.subtleCrypto.digest('SHA-256', payload);

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { RandomGenerator } from '@diplomatiq/crypto-random';
 import { CryptoService } from './crypto.service';
 
 /**
@@ -25,12 +24,10 @@ export class AeadService {
     private static readonly INITIALIZATION_VECTOR_LENGTH_BYTES = 12;
     private static readonly AUTHENTICATION_TAG_LENGTH_BYTES = 16;
 
-    private readonly randomGenerator = new RandomGenerator();
-
     public constructor(private readonly cryptoService: CryptoService) {}
 
     public async toBytes(plaintext: Uint8Array, aad: Uint8Array, key: Uint8Array): Promise<Uint8Array> {
-        const iv = await this.randomGenerator.bytes(AeadService.INITIALIZATION_VECTOR_LENGTH_BYTES);
+        const iv = await this.cryptoService.randomGenerator.bytes(AeadService.INITIALIZATION_VECTOR_LENGTH_BYTES);
         const ciphertextWithAuthenticationTag = await this.cryptoService.encrypt(
             plaintext,
             aad,

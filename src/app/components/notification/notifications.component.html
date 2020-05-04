@@ -1,0 +1,9 @@
+<ngb-toast
+    *ngFor="let notification of notifications"
+    [class]="notification.className"
+    [header]="notification.header"
+    [autohide]="true"
+    [delay]="notification.visibleFor"
+    (hide)="removeNotification(notification)"
+    >{{ notification.body }}</ngb-toast
+>

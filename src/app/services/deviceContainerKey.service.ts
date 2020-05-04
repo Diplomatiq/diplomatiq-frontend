@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import {
-    Configuration,
-    FetchParams,
-    GetDeviceContainerKeyV1Response,
-    RequestContext,
-    UnauthenticatedMethodsApi,
-} from '../../openapi/api';
-import { clientId } from '../constants/clientId';
+import { Configuration, GetDeviceContainerKeyV1Response, UnauthenticatedMethodsApi } from '../../openapi/api';
+import { BaseHeadersProvidingRequestContextConsumerFactoryService } from './baseHeadersProvidingRequestContextConsumerFactory.service';
+import { ApiErrorHandlingResponseContextConsumerFactoryService } from './responseContextConsumerFactory.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DeviceContainerKeyService {
-    public readonly unauthenticatedMethodsApi: UnauthenticatedMethodsApi;
+    private readonly unauthenticatedMethodsApi: UnauthenticatedMethodsApi;
 
-    public constructor() {
+    public constructor(
+        private readonly baseHeadersProvidingRequestContextConsumerFactoryService: BaseHeadersProvidingRequestContextConsumerFactoryService,
+        private readonly apiErrorHandlingResponseContextConsumerFactoryService: ApiErrorHandlingResponseContextConsumerFactoryService,
+    ) {
         const unauthenticatedConfiguration = this.openApiConfigurationFactory();
         this.unauthenticatedMethodsApi = new UnauthenticatedMethodsApi(unauthenticatedConfiguration);
     }
@@ -31,15 +29,8 @@ export class DeviceContainerKeyService {
             basePath: environment.apiUrl,
             middleware: [
                 {
-                    // eslint-disable-next-line @typescript-eslint/require-await
-                    pre: async (context: RequestContext): Promise<FetchParams | void> => {
-                        if (context.init.headers === undefined) {
-                            context.init.headers = {};
-                        }
-
-                        context.init.headers['ClientId'] = clientId;
-                        context.init.headers['Instant'] = new Date().toISOString();
-                    },
+                    pre: this.baseHeadersProvidingRequestContextConsumerFactoryService.getRequestContextConsumer(),
+                    post: this.apiErrorHandlingResponseContextConsumerFactoryService.getResponseContextConsumer(),
                 },
             ],
         };

@@ -5,14 +5,13 @@ import {
     AuthenticationSessionMethodsPasswordElevatedSessionApi,
     Configuration,
     DeviceMethodsApi,
-    FetchParams,
-    RequestContext,
     SessionMethodsPasswordElevatedSessionApi,
     SessionMethodsRegularSessionApi,
     UnauthenticatedMethodsApi,
 } from '../../openapi/api';
 import { DiplomatiqAuthenticationScheme } from '../types/diplomatiqAuthenticationScheme';
-import { HeadersProviderService } from './headersProvider.service';
+import { AllHeadersProvidingRequestContextConsumerFactoryService } from './allHeadersProvidingRequestContextConsumerFactory.service';
+import { ApiErrorHandlingResponseContextConsumerFactoryService } from './responseContextConsumerFactory.service';
 
 @Injectable({
     providedIn: 'root',
@@ -28,7 +27,10 @@ export class ApiService {
     public readonly regularSessionMethodsApi: SessionMethodsRegularSessionApi;
     public readonly passwordElevatedSessionMethodsApi: SessionMethodsPasswordElevatedSessionApi;
 
-    public constructor(private readonly headersProviderService: HeadersProviderService) {
+    public constructor(
+        private readonly allHeadersProvidingRequestContextConsumerFactoryService: AllHeadersProvidingRequestContextConsumerFactoryService,
+        private readonly apiErrorHandlingResponseContextConsumerFactoryService: ApiErrorHandlingResponseContextConsumerFactoryService,
+    ) {
         const unauthenticatedConfiguration = this.openApiConfigurationFactory(
             DiplomatiqAuthenticationScheme.Unauthenticated,
         );
@@ -63,13 +65,10 @@ export class ApiService {
             basePath: environment.apiUrl,
             middleware: [
                 {
-                    pre: async (context: RequestContext): Promise<FetchParams | void> => {
-                        await this.headersProviderService.provideHeaders(
-                            authenticationScheme,
-                            context.url,
-                            context.init,
-                        );
-                    },
+                    pre: this.allHeadersProvidingRequestContextConsumerFactoryService.getRequestContextConsumer(
+                        authenticationScheme,
+                    ),
+                    post: this.apiErrorHandlingResponseContextConsumerFactoryService.getResponseContextConsumer(),
                 },
             ],
         };

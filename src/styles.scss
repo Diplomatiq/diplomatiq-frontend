@@ -12,13 +12,15 @@ $color-10: #dd1e44;
 $theme-colors: (
     'primary': $color-9,
     'secondary': $color-4,
-    'success': $color-6,
-    'danger': $color-7,
-    'warning': $color-7,
     'info': $color-3,
+    'success': $color-6,
+    'warning': $color-7,
+    'danger': $color-10,
 );
 
 $body-color: $color-4;
+
+$zindex-notification: 1100;
 
 html,
 body {
@@ -28,3 +30,6 @@ body {
 }
 
 @import '../node_modules/bootstrap/scss/bootstrap';
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
