@@ -59,8 +59,8 @@ jobs:
               run: npm run lint
             # - name: Run unit tests
             #   run: npm run test-ci
-            - name: Run end-to-end tests
-              run: npm run e2e-ci
+            # - name: Run end-to-end tests
+            #   run: npm run e2e-ci
             - name: Scan the code with SonarCloud
               uses: sonarsource/sonarcloud-github-action@34eca22d1c5760f6ec08cb4b5c2f026796eb8e30
               env:
