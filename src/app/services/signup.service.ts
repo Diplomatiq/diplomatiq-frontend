@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
-import * as srp6Client from 'secure-remote-password/client';
 import { RegisterUserV1RequestPasswordStretchingAlgorithmEnum } from '../../openapi/api';
 import { ApiService } from './api.service';
 import { CryptoService } from './crypto.service';
+import { SrpService } from './srp.service';
 
 @Injectable({
     providedIn: 'root',
@@ -12,18 +12,21 @@ export class SignupService {
     private readonly binaryConverter = new DefaultBinaryConverter();
     private readonly stringConverter = new DefaultStringConverter();
 
-    public constructor(private readonly cryptoService: CryptoService, private readonly apiService: ApiService) {}
+    public constructor(
+        private readonly cryptoService: CryptoService,
+        private readonly srpService: SrpService,
+        private readonly apiService: ApiService,
+    ) {}
 
-    public async signUp(emailAddress: string, password: string, firstName: string, lastName: string): Promise<void> {
-        const passwordBytes = this.stringConverter.encodeToBytes(password);
+    public async signup(emailAddress: string, password: string, firstName: string, lastName: string): Promise<void> {
         const saltBytes = await this.cryptoService.randomGenerator.bytes(32);
-        const passwordHashBytes = await this.cryptoService.scrypt(passwordBytes, saltBytes);
-
         const saltHex = this.binaryConverter.encodeToHex(saltBytes);
-        const passwordHashHex = this.binaryConverter.encodeToHex(passwordHashBytes);
-        const privateKey = srp6Client.derivePrivateKey(saltHex, emailAddress, passwordHashHex);
 
-        const srpVerifierHex = srp6Client.deriveVerifier(privateKey);
+        const passwordBytes = this.stringConverter.encodeToBytes(password);
+        const passwordScryptBytes = await this.cryptoService.scrypt(passwordBytes, saltBytes);
+        const passwordScryptHex = this.binaryConverter.encodeToHex(passwordScryptBytes);
+
+        const verifierHex = this.srpService.createVerifier(emailAddress, passwordScryptHex, saltHex);
 
         await this.apiService.unauthenticatedMethodsApi.registerUserV1({
             registerUserV1Request: {
@@ -31,7 +34,7 @@ export class SignupService {
                 firstName,
                 lastName,
                 srpSaltHex: saltHex,
-                srpVerifierHex,
+                srpVerifierHex: verifierHex,
                 passwordStretchingAlgorithm: RegisterUserV1RequestPasswordStretchingAlgorithmEnum.ScryptV1,
             },
         });

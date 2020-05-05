@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/login/login.component';
+import { MfaComponent } from '../components/mfa/mfa.component';
+import { SignupComponent } from '../components/signup/signup.component';
 import { ValidateEmailAddressComponent } from '../components/validate-email-address/validate-email-address.component';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
+    { path: 'signup', component: SignupComponent },
+    { path: 'mfa', component: MfaComponent },
     { path: 'validate-email-address', component: ValidateEmailAddressComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];

@@ -2,11 +2,12 @@
     <h1>{{ heading }}</h1>
     <p class="text-muted">{{ subheading }}</p>
     <hr />
-    <form *ngIf="!signupCompleted" (ngSubmit)="submit()">
+    <form *ngIf="state === 'login'" (ngSubmit)="initLogin()">
         <div class="form-group">
             <label for="emailAddress">Email address</label>
             <input
                 type="email"
+                inputmode="email"
                 [(ngModel)]="emailAddress"
                 name="emailAddress"
                 class="form-control"
@@ -15,33 +16,6 @@
                 placeholder="Enter your email address"
                 autofocus
             />
-            <small *ngIf="signup" id="emailHelper" class="form-text text-muted"
-                >We'll never share your email with anyone else.</small
-            >
-        </div>
-        <div class="form-group" *ngIf="signup">
-            <label>Name</label>
-            <div class="form-row">
-                <div class="col">
-                    <input
-                        type="text"
-                        [(ngModel)]="firstName"
-                        name="firstName"
-                        class="form-control"
-                        placeholder="Enter your first name"
-                    />
-                </div>
-                <div class="col">
-                    <input
-                        type="text"
-                        [(ngModel)]="lastName"
-                        name="lastName"
-                        class="form-control"
-                        placeholder="Enter your last name"
-                    />
-                </div>
-            </div>
-            <small id="nameHelper" class="form-text text-muted">{{ nameHelper }}</small>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
@@ -53,17 +27,13 @@
                 id="password"
                 placeholder="Enter your password"
             />
-            <small *ngIf="signup" id="passwordHelper" class="form-text text-muted"
-                >Your password is protected by Scrypt and the SRP protocol. But you still have to
-                <strong>choose a strong one!</strong></small
-            >
         </div>
 
         <hr />
 
         <div>
-            <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">{{ primaryButtonLabel }}</button>
-            <button *ngIf="!signup" class="btn btn-link" (click)="switchToSignUp()">Sign up</button>
+            <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Log in</button>
+            <button class="btn btn-link" (click)="switchToSignUp()">Sign up</button>
         </div>
     </form>
 </div>

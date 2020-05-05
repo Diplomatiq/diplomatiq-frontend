@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { EmailAddressValidationService } from '../../services/emailAddressValidation.service';
 import { LoginService } from '../../services/login.service';
 import { NotificationService } from '../../services/notification.service';
-import { SignupService } from '../../services/signup.service';
 
 @Component({
     selector: 'diplomatiq-frontend-login',
@@ -10,87 +10,56 @@ import { SignupService } from '../../services/signup.service';
     styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-    public signup = false;
-    public signupCompleted = false;
+    public state: 'login' | 'login-progress' = 'login';
 
     public emailAddress = '';
     public password = '';
-    public firstName = '';
-    public lastName = '';
 
     public get heading(): string {
-        if (this.signupCompleted) {
-            return 'Validate your email address';
+        switch (this.state) {
+            case 'login':
+                return 'Log in to Diplomatiq';
+            case 'login-progress':
+                return 'Logging you in…';
         }
-
-        return this.signup ? 'Sign up for Diplomatiq' : 'Log in to Diplomatiq';
     }
 
     public get subheading(): string {
-        if (this.signupCompleted) {
-            return 'You should have received an email by now. Please visit your inbox.';
+        switch (this.state) {
+            case 'login':
+                return 'Welcome back!';
+            case 'login-progress':
+                return 'Please wait.';
         }
-
-        return this.signup ? 'Experience the power of the diplomatiq networking.' : 'Welcome back!';
-    }
-
-    public get primaryButtonLabel(): string {
-        return this.signup ? 'Sign up' : 'Log in';
-    }
-
-    public get nameHelper(): string {
-        if (this.firstName !== '' && this.lastName !== '') {
-            return `Welcome aboard, ${this.firstName} ${this.lastName}!`;
-        }
-
-        if (this.firstName !== '') {
-            return `Welcome aboard, ${this.firstName}!`;
-        }
-
-        return 'Welcome aboard!';
     }
 
     public constructor(
         private readonly loginService: LoginService,
-        private readonly signupService: SignupService,
         private readonly emailAddressValidationService: EmailAddressValidationService,
         private readonly notificationService: NotificationService,
+        private readonly router: Router,
     ) {}
 
-    public switchToSignUp(): void {
-        this.signup = true;
-    }
-
     public validateForm(): boolean {
-        const emailValid = this.emailAddressValidationService.validate(this.emailAddress);
-        const emailAndPassword = emailValid && this.password !== '';
-
-        if (!this.signup) {
-            return emailAndPassword;
-        }
-
-        const name = this.firstName !== '' && this.lastName !== '';
-        return emailAndPassword && name;
+        return this.emailAddressValidationService.validate(this.emailAddress) && this.password !== '';
     }
 
-    public async submit(): Promise<void> {
-        if (this.signup) {
-            await this.doSignup();
-        } else {
-            await this.doLogin();
-        }
-    }
-
-    private async doSignup(): Promise<void> {
+    public async initLogin(): Promise<void> {
         try {
-            await this.signupService.signUp(this.emailAddress, this.password, this.firstName, this.lastName);
-            this.signupCompleted = true;
+            this.state = 'login-progress';
+            await Promise.all([
+                this.loginService.initLogin(this.emailAddress, this.password),
+                new Promise((resolve): unknown => setTimeout(resolve, 5000)),
+            ]);
+            await this.router.navigateByUrl('mfa');
         } catch (ex) {
-            this.notificationService.danger('An error happened. Please try again later.');
+            this.notificationService.danger("We couldn't log you in. Please check your credentials.");
+            this.password = '';
+            this.state = 'login';
         }
     }
 
-    private async doLogin(): Promise<void> {
-        await this.loginService.login(this.emailAddress, this.password);
+    public async switchToSignUp(): Promise<void> {
+        await this.router.navigateByUrl('signup');
     }
 }

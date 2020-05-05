@@ -57,7 +57,7 @@ export class HeadersProviderService {
             .map((h: string): string => h.toLowerCase())
             .join(';');
 
-        const requestSignatureBase64 = this.getRequestSignatureBase64(
+        const requestSignatureBase64 = await this.getRequestSignatureBase64(
             authenticationScheme,
             url,
             request,
@@ -81,7 +81,7 @@ export class HeadersProviderService {
             .map((h: string): string => h.toLowerCase())
             .join(';');
 
-        const requestSignatureBase64 = this.getRequestSignatureBase64(
+        const requestSignatureBase64 = await this.getRequestSignatureBase64(
             authenticationScheme,
             url,
             request,
@@ -106,7 +106,7 @@ export class HeadersProviderService {
             .map((h: string): string => h.toLowerCase())
             .join(';');
 
-        const requestSignatureBase64 = this.getRequestSignatureBase64(
+        const requestSignatureBase64 = await this.getRequestSignatureBase64(
             authenticationScheme,
             url,
             request,
@@ -129,8 +129,9 @@ export class HeadersProviderService {
         request: RequestInit,
         signedHeaderNames: string[],
     ): Promise<string> {
-        const [uri, queryStringOrUndefined] = url.split('?');
-        const queryString = queryStringOrUndefined !== undefined ? queryStringOrUndefined : '';
+        const parsedUrl = new URL(url);
+        const uri = parsedUrl.pathname;
+        const queryString = parsedUrl.search.replace(/^\?/u, '');
 
         const headers = this.getHeaders(request);
         const signedHeaders = signedHeaderNames

@@ -4,6 +4,7 @@ import {
     AuthenticationSessionMethodsMultiFactorElevatedSessionApi,
     AuthenticationSessionMethodsPasswordElevatedSessionApi,
     Configuration,
+    ConfigurationParameters,
     DeviceMethodsApi,
     SessionMethodsPasswordElevatedSessionApi,
     SessionMethodsRegularSessionApi,
@@ -61,7 +62,7 @@ export class ApiService {
     }
 
     private openApiConfigurationFactory(authenticationScheme: DiplomatiqAuthenticationScheme): Configuration {
-        const apiConfigurationParameters = {
+        const apiConfigurationParameters: ConfigurationParameters = {
             basePath: environment.apiUrl,
             middleware: [
                 {
@@ -71,6 +72,7 @@ export class ApiService {
                     post: this.apiErrorHandlingResponseContextConsumerFactoryService.getResponseContextConsumer(),
                 },
             ],
+            credentials: 'omit',
         };
         return new Configuration(apiConfigurationParameters);
     }

@@ -63,31 +63,35 @@ export class AeadService {
         let reading = 0;
 
         reading = 1;
-        const ivLength = this.convertBigEndianUint8ArrayToPositiveNumber(bytes.subarray(cursor, reading));
+        const ivLengthBytes = bytes.subarray(cursor, cursor + reading);
+        const ivLength = this.convertBigEndianUint8ArrayToPositiveNumber(ivLengthBytes);
         cursor += reading;
 
         reading = 4;
-        const aadLength = this.convertBigEndianUint8ArrayToPositiveNumber(bytes.subarray(cursor, reading));
+        const aadLengthBytes = bytes.subarray(cursor, cursor + reading);
+        const aadLength = this.convertBigEndianUint8ArrayToPositiveNumber(aadLengthBytes);
         cursor += reading;
 
         reading = 4;
-        const ciphertextLength = this.convertBigEndianUint8ArrayToPositiveNumber(bytes.subarray(cursor, reading));
+        const ciphertextLengthBytes = bytes.subarray(cursor, cursor + reading);
+        const ciphertextLength = this.convertBigEndianUint8ArrayToPositiveNumber(ciphertextLengthBytes);
         cursor += reading;
 
         reading = 1;
-        const tagLength = this.convertBigEndianUint8ArrayToPositiveNumber(bytes.subarray(cursor, reading));
+        const tagLengthBytes = bytes.subarray(cursor, cursor + reading);
+        const tagLength = this.convertBigEndianUint8ArrayToPositiveNumber(tagLengthBytes);
         cursor += reading;
 
         reading = ivLength;
-        const iv = bytes.subarray(cursor, reading);
+        const iv = bytes.subarray(cursor, cursor + reading);
         cursor += reading;
 
         reading = aadLength;
-        const aad = bytes.subarray(cursor, reading);
+        const aad = bytes.subarray(cursor, cursor + reading);
         cursor += reading;
 
         reading = ciphertextLength + tagLength;
-        const ciphertextWithAuthenticationTag = bytes.subarray(cursor, reading);
+        const ciphertextWithAuthenticationTag = bytes.subarray(cursor, cursor + reading);
         cursor += reading;
 
         const plaintext = await this.cryptoService.decrypt(ciphertextWithAuthenticationTag, aad, iv, key, tagLength);
