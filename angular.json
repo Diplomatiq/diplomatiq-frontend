@@ -35,7 +35,8 @@
                             "src/mstile-150x150.png",
                             "src/safari-pinned-tab.svg",
                             "src/site.webmanifest",
-                            "src/assets"
+                            "src/assets",
+                            "src/web.config"
                         ],
                         "styles": ["src/styles.scss"],
                         "scripts": []
@@ -54,7 +55,6 @@
                             "extractCss": true,
                             "namedChunks": false,
                             "i18nMissingTranslation": "error",
-                            "assets": ["src/web.config"],
                             "deployUrl": "",
                             "extractLicenses": true,
                             "vendorChunk": false,
