@@ -7,7 +7,7 @@ import { HeadersProviderService } from './headersProvider.service';
     providedIn: 'root',
 })
 export class AllHeadersProvidingRequestContextConsumerFactoryService {
-    constructor(private readonly headersProviderService: HeadersProviderService) {}
+    public constructor(private readonly headersProviderService: HeadersProviderService) {}
 
     public getRequestContextConsumer(
         authenticationScheme: DiplomatiqAuthenticationScheme,
