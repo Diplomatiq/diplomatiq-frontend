@@ -6,6 +6,7 @@ import { AeadService } from './aead.service';
 import { ApiService } from './api.service';
 import { CryptoService } from './crypto.service';
 import { DeviceContainerService } from './deviceContainer.service';
+import { SessionService } from './session.service';
 import { SrpService } from './srp.service';
 
 @Injectable({
@@ -21,6 +22,7 @@ export class LoginService {
         private readonly apiService: ApiService,
         private readonly aeadService: AeadService,
         private readonly deviceContainerService: DeviceContainerService,
+        private readonly sessionService: SessionService,
     ) {}
 
     public async initLogin(emailAddress: string, password: string): Promise<void> {
@@ -86,8 +88,12 @@ export class LoginService {
         }
     }
 
-    public logout(): void {
-        this.deviceContainerService.purge();
+    public async logout(): Promise<void> {
+        try {
+            await this.apiService.deviceMethodsApi.logoutV1();
+        } finally {
+            this.deviceContainerService.purge();
+        }
     }
 
     private async getAuthenticationSession(emailAddress: string, password: string): Promise<AuthenticationSession> {

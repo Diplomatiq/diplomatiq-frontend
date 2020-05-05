@@ -59,6 +59,10 @@ export class DeviceMethodsApi extends runtime.BaseAPI {
         }
 
         if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
             headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
         }
 
@@ -84,6 +88,53 @@ export class DeviceMethodsApi extends runtime.BaseAPI {
     async getSessionV1(requestParameters: DeviceMethodsApiGetSessionV1Request): Promise<GetSessionV1Response> {
         const response = await this.getSessionV1Raw(requestParameters);
         return await response.value();
+    }
+
+    /**
+     * Logs out the user on the current client device. Deregisters the client device and its session, and revokes request signing and authentication credentials for that client device.
+     * Log out from a device
+     */
+    async logoutV1Raw(): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/logout-v1`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Logs out the user on the current client device. Deregisters the client device and its session, and revokes request signing and authentication credentials for that client device.
+     * Log out from a device
+     */
+    async logoutV1(): Promise<void> {
+        await this.logoutV1Raw();
     }
 
 }
