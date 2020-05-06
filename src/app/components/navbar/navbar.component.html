@@ -5,4 +5,14 @@
             <span>Diplomatiq</span>
         </div>
     </div>
+    <div *ngIf="isUserMenuVisible" ngbDropdown class="d-inline-block">
+        <button class="btn btn-sm btn-light" id="user-dropdown" ngbDropdownToggle>{{ userFullName }}</button>
+        <div ngbDropdownMenu aria-labelledby="user-dropdown">
+            <h6 class="dropdown-header">{{ userEmailAddress }}</h6>
+            <button ngbDropdownItem routerLink="dashboard">Dashboard</button>
+            <button ngbDropdownItem routerLink="profile">Profile</button>
+            <div class="dropdown-divider"></div>
+            <button ngbDropdownItem (click)="logout()" class="text-danger">Log out</button>
+        </div>
+    </div>
 </div>

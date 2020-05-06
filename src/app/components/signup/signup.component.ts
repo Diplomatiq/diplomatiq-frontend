@@ -79,7 +79,7 @@ export class SignupComponent {
             this.state = 'signup-progress';
             await Promise.all([
                 this.signupService.signup(this.emailAddress, this.password, this.firstName, this.lastName),
-                new Promise((resolve): unknown => setTimeout(resolve, 5000)),
+                new Promise((resolve): unknown => setTimeout(resolve, 3000)),
             ]);
             this.state = 'signup-complete';
         } catch (ex) {

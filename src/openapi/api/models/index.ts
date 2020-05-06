@@ -6,6 +6,7 @@ export * from './ElevateRegularSessionInitV1Response';
 export * from './GetDeviceContainerKeyV1Response';
 export * from './GetSessionV1Request';
 export * from './GetSessionV1Response';
+export * from './GetUserIdentityV1Response';
 export * from './LoginV1Response';
 export * from './PasswordAuthenticationCompleteV1Request';
 export * from './PasswordAuthenticationCompleteV1Response';

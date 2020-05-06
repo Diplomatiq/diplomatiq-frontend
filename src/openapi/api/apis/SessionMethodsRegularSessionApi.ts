@@ -24,6 +24,9 @@ import {
     ElevateRegularSessionInitV1Response,
     ElevateRegularSessionInitV1ResponseFromJSON,
     ElevateRegularSessionInitV1ResponseToJSON,
+    GetUserIdentityV1Response,
+    GetUserIdentityV1ResponseFromJSON,
+    GetUserIdentityV1ResponseToJSON,
 } from '../models';
 
 export interface SessionMethodsRegularSessionApiElevateRegularSessionCompleteV1Request {
@@ -142,6 +145,58 @@ export class SessionMethodsRegularSessionApi extends runtime.BaseAPI {
      */
     async elevateRegularSessionInitV1(): Promise<ElevateRegularSessionInitV1Response> {
         const response = await this.elevateRegularSessionInitV1Raw();
+        return await response.value();
+    }
+
+    /**
+     * Returns the identity of the authenticated user
+     * Get the identity of the user
+     */
+    async getUserIdentityV1Raw(): Promise<runtime.ApiResponse<GetUserIdentityV1Response>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/get-user-identity-v1`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetUserIdentityV1ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns the identity of the authenticated user
+     * Get the identity of the user
+     */
+    async getUserIdentityV1(): Promise<GetUserIdentityV1Response> {
+        const response = await this.getUserIdentityV1Raw();
         return await response.value();
     }
 

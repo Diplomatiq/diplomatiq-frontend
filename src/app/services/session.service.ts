@@ -20,18 +20,23 @@ export class SessionService {
     ) {}
 
     public async withSession<T>(apiCall: () => Promise<T>): Promise<T> {
+        const sessionId = await this.deviceContainerService.getSessionId();
+        if (sessionId === undefined) {
+            await this.getNewSession();
+        }
+
         const policy = new RetryPolicy<T>();
         policy.reactOnException((ex: DiplomatiqApiException): boolean => ex.errorCode === 'Unauthorized');
         policy.retryCount(1);
         policy.onRetry(
             async (): Promise<void> => {
-                await this.renewSession();
+                await this.getNewSession();
             },
         );
         return policy.execute(async (): Promise<T> => apiCall());
     }
 
-    private async renewSession(): Promise<void> {
+    private async getNewSession(): Promise<void> {
         const deviceKey = await this.deviceContainerService.getDeviceKey();
         const sessionToken = await this.deviceContainerService.getSessionToken();
         const sessionTokenAeadBytes = await this.aeadService.toBytes(sessionToken, new Uint8Array(), deviceKey);

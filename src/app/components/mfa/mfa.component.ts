@@ -46,7 +46,7 @@ export class MfaComponent {
             this.state = 'mfa-progress';
             await Promise.all([
                 this.loginService.completeLogin(this.verificationCode),
-                new Promise((resolve): unknown => setTimeout(resolve, 5000)),
+                new Promise((resolve): unknown => setTimeout(resolve, 3000)),
             ]);
             await this.router.navigateByUrl('dashboard');
             this.notificationService.success('You have successfully logged in.');
@@ -58,7 +58,7 @@ export class MfaComponent {
     }
 
     public async logout(): Promise<void> {
-        this.loginService.logout();
+        /* noawait */ this.loginService.logout();
         await this.router.navigateByUrl('login');
         this.notificationService.success('You have successfully logged out.');
     }

@@ -57,57 +57,46 @@ export class DeviceContainerService {
     private deviceContainer?: DeviceContainer;
 
     private initDeferred?: Deferred<void>;
-    private loadedDeferred?: Deferred<void>;
 
     public constructor(private readonly aeadService: AeadService) {}
 
-    public async initializeTemporaryContainer(): Promise<void> {
-        await this.initialize(
+    public initializeTemporaryEmptyContainer(): void {
+        this.initializeInternal(
             DeviceContainerService.TEMPORARY_DEVICE_ID,
             DeviceContainerService.TEMPORARY_DEVICE_CONTAINER_KEY,
+            {},
         );
     }
 
-    public async initialize(deviceId: string, deviceContainerKey: Uint8Array): Promise<void> {
-        if (this.initDeferred !== undefined && this.loadedDeferred !== undefined) {
-            this.initDeferred.reject();
-            this.loadedDeferred.reject();
+    public initializeEmptyContainer(deviceId: string, deviceContainerKey: Uint8Array): void {
+        this.initializeInternal(deviceId, deviceContainerKey, {});
+    }
+
+    public async initializeFromPersistedContainer(
+        deviceContainerKeyGetter: (deviceId: string) => Promise<Uint8Array>,
+    ): Promise<void> {
+        const deviceId = this.localStorage.getItem(DeviceContainerService.DEVICE_ID_KEY);
+        if (deviceId === null) {
             this.purge();
-        } else {
-            this.reset();
+            return;
         }
 
-        this.initDeferred = new Deferred();
-        this.loadedDeferred = new Deferred();
+        try {
+            const deviceContainerEntryId = this.getDeviceContainerEntryId(deviceId);
+            const deviceContainerEntry = this.localStorage.getItem(deviceContainerEntryId);
+            const deviceContainerAeadBytes = this.binaryConverter.decodeFromBase64(deviceContainerEntry);
+            const deviceContainerKey = await deviceContainerKeyGetter(deviceId);
+            const { plaintext: deviceContainerBytes } = await this.aeadService.fromBytes(
+                deviceContainerAeadBytes,
+                deviceContainerKey,
+            );
+            const deviceContainerJson = this.stringConverter.decodeFromBytes(deviceContainerBytes);
+            const deviceContainer = JSON.parse(deviceContainerJson);
 
-        this.deviceId = deviceId;
-        this.deviceContainerKey = deviceContainerKey;
-
-        this.initDeferred.resolve();
-
-        const deviceContainerEntryId = await this.getDeviceContainerEntryId();
-        const deviceContainerEntry = this.localStorage.getItem(deviceContainerEntryId);
-
-        if (deviceContainerEntry === null) {
-            this.deviceContainer = {};
-        } else {
-            try {
-                const deviceContainerAeadBytes = this.binaryConverter.decodeFromBase64(deviceContainerEntry);
-                const { plaintext: deviceContainerBytes } = await this.aeadService.fromBytes(
-                    deviceContainerAeadBytes,
-                    this.deviceContainerKey,
-                );
-                const deviceContainerJson = this.stringConverter.decodeFromBytes(deviceContainerBytes);
-                this.deviceContainer = JSON.parse(deviceContainerJson);
-            } catch (ex) {
-                this.deviceContainer = {};
-            }
+            this.initializeInternal(deviceId, deviceContainerKey, deviceContainer);
+        } catch (ex) {
+            this.purge();
         }
-
-        this.loadedDeferred.resolve();
-
-        await this.save();
-        this.localStorage.setItem(DeviceContainerService.DEVICE_ID_KEY, this.deviceId);
     }
 
     public async getDeviceId(): Promise<string | undefined> {
@@ -115,24 +104,38 @@ export class DeviceContainerService {
         return this.deviceId;
     }
 
+    public async isLoggedIn(): Promise<boolean> {
+        try {
+            await this.initGuard();
+            return (
+                this.deviceId !== undefined &&
+                this.deviceId !== DeviceContainerService.TEMPORARY_DEVICE_ID &&
+                this.deviceContainer.deviceKeyBase64 !== undefined &&
+                this.deviceContainer.sessionTokenBase64 !== undefined
+            );
+        } catch (ex) {
+            return false;
+        }
+    }
+
     public async getAuthenticationSessionId(): Promise<string | undefined> {
-        await this.loadedGuard();
+        await this.initGuard();
         return this.deviceContainer.authenticationSessionId;
     }
 
     public async setAuthenticationSessionId(authenticationSessionId: string): Promise<void> {
-        await this.loadedGuard();
+        await this.initGuard();
         this.deviceContainer.authenticationSessionId = authenticationSessionId;
         await this.save();
     }
 
     public async getAuthenticationSessionKey(): Promise<Uint8Array | undefined> {
-        await this.loadedGuard();
+        await this.initGuard();
         return this.binaryConverter.decodeFromBase64(this.deviceContainer.authenticationSessionKeyBase64);
     }
 
     public async setAuthenticationSessionKey(authenticationSessionKey: Uint8Array): Promise<void> {
-        await this.loadedGuard();
+        await this.initGuard();
         this.deviceContainer.authenticationSessionKeyBase64 = this.binaryConverter.encodeToBase64(
             authenticationSessionKey,
         );
@@ -140,50 +143,72 @@ export class DeviceContainerService {
     }
 
     public async getDeviceKey(): Promise<Uint8Array | undefined> {
-        await this.loadedGuard();
+        await this.initGuard();
         return this.binaryConverter.decodeFromBase64(this.deviceContainer.deviceKeyBase64);
     }
 
     public async setDeviceKey(deviceKey: Uint8Array): Promise<void> {
-        await this.loadedGuard();
+        await this.initGuard();
         this.deviceContainer.deviceKeyBase64 = this.binaryConverter.encodeToBase64(deviceKey);
         await this.save();
     }
 
     public async getSessionId(): Promise<string | undefined> {
-        await this.loadedGuard();
+        await this.initGuard();
         return this.deviceContainer.sessionId;
     }
 
     public async setSessionId(sessionId: string): Promise<void> {
-        await this.loadedGuard();
+        await this.initGuard();
         this.deviceContainer.sessionId = sessionId;
         await this.save();
     }
 
     public async getSessionToken(): Promise<Uint8Array | undefined> {
-        await this.loadedGuard();
+        await this.initGuard();
         return this.binaryConverter.decodeFromBase64(this.deviceContainer.sessionTokenBase64);
     }
 
     public async setSessionToken(sessionToken: Uint8Array): Promise<void> {
-        await this.loadedGuard();
+        await this.initGuard();
         this.deviceContainer.sessionTokenBase64 = this.binaryConverter.encodeToBase64(sessionToken);
         await this.save();
     }
 
     public async clear(): Promise<void> {
-        await this.loadedGuard();
+        await this.initGuard();
         this.deviceContainer = {};
         await this.save();
     }
 
     public purge(): void {
         this.localStorage.clear();
+        this.reset();
+    }
+
+    private initializeInternal(
+        deviceId: string,
+        deviceContainerKey: Uint8Array,
+        deviceContainer: DeviceContainer,
+    ): void {
+        if (this.initDeferred !== undefined) {
+            this.initDeferred.reject();
+            this.purge();
+        } else {
+            this.reset();
+        }
+
+        this.initDeferred = new Deferred();
+
+        this.deviceId = deviceId;
+        this.deviceContainerKey = deviceContainerKey;
+        this.deviceContainer = deviceContainer;
+
+        this.initDeferred.resolve();
     }
 
     private async save(): Promise<void> {
-        await this.loadedGuard();
+        await this.initGuard();
 
         const deviceContainerJson = JSON.stringify(this.deviceContainer);
         const deviceContainerBytes = this.stringConverter.encodeToBytes(deviceContainerJson);
@@ -193,12 +218,14 @@ export class DeviceContainerService {
             this.deviceContainerKey,
         );
         const deviceContainerAeadBase64 = this.binaryConverter.encodeToBase64(deviceContainerAeadBytes);
-        this.localStorage.setItem(this.deviceId, deviceContainerAeadBase64);
+
+        const deviceContainerEntryId = this.getDeviceContainerEntryId(this.deviceId);
+        this.localStorage.setItem(deviceContainerEntryId, deviceContainerAeadBase64);
+        this.localStorage.setItem(DeviceContainerService.DEVICE_ID_KEY, this.deviceId);
     }
 
-    private async getDeviceContainerEntryId(): Promise<string> {
-        await this.initGuard();
-        return `${DeviceContainerService.DEVICE_CONTAINER_ENTRY_PREFIX}_${this.deviceId}`;
+    private getDeviceContainerEntryId(deviceId: string): string {
+        return `${DeviceContainerService.DEVICE_CONTAINER_ENTRY_PREFIX}_${deviceId}`;
     }
 
     private reset(): void {
@@ -207,7 +234,6 @@ export class DeviceContainerService {
         this.deviceContainer = undefined;
 
         this.initDeferred = undefined;
-        this.loadedDeferred = undefined;
     }
 
     private async initGuard(): Promise<void> {
@@ -216,15 +242,5 @@ export class DeviceContainerService {
         }
 
         await this.initDeferred.promise;
-    }
-
-    private async loadedGuard(): Promise<void> {
-        await this.initGuard();
-
-        if (this.loadedDeferred === undefined) {
-            throw new Error('DeviceContainerNotInitialized');
-        }
-
-        await this.loadedDeferred.promise;
     }
 }

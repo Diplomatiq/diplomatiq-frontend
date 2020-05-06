@@ -49,7 +49,7 @@ export class LoginComponent {
             this.state = 'login-progress';
             await Promise.all([
                 this.loginService.initLogin(this.emailAddress, this.password),
-                new Promise((resolve): unknown => setTimeout(resolve, 5000)),
+                new Promise((resolve): unknown => setTimeout(resolve, 3000)),
             ]);
             await this.router.navigateByUrl('mfa');
         } catch (ex) {

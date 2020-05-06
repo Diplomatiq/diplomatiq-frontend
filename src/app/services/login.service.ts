@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
 import { BigInteger } from 'jsbn';
 import { AuthenticationSession } from '../types/authenticationSession';
@@ -13,6 +13,9 @@ import { SrpService } from './srp.service';
     providedIn: 'root',
 })
 export class LoginService {
+    public readonly loggedIn = new EventEmitter<void>();
+    public readonly loggedOut = new EventEmitter<void>();
+
     private readonly binaryConverter = new DefaultBinaryConverter();
     private readonly stringConverter = new DefaultStringConverter();
 
@@ -29,7 +32,7 @@ export class LoginService {
         try {
             const authenticationSession = await this.getAuthenticationSession(emailAddress, password);
 
-            await this.deviceContainerService.initializeTemporaryContainer();
+            this.deviceContainerService.initializeTemporaryEmptyContainer();
             await this.deviceContainerService.setAuthenticationSessionId(authenticationSession.id);
             await this.deviceContainerService.setAuthenticationSessionKey(authenticationSession.key);
 
@@ -79,9 +82,11 @@ export class LoginService {
             });
             const deviceContainerKeyBytes = this.binaryConverter.decodeFromBase64(deviceContainerKeyBase64);
 
-            await this.deviceContainerService.initialize(deviceId, deviceContainerKeyBytes);
+            this.deviceContainerService.initializeEmptyContainer(deviceId, deviceContainerKeyBytes);
             await this.deviceContainerService.setDeviceKey(deviceKeyBytes);
             await this.deviceContainerService.setSessionToken(sessionTokenBytes);
+
+            this.loggedIn.emit();
         } catch (ex) {
             this.deviceContainerService.purge();
             throw ex;
@@ -91,9 +96,16 @@ export class LoginService {
     public async logout(): Promise<void> {
         try {
             await this.apiService.deviceMethodsApi.logoutV1();
+            this.loggedOut.emit();
+        } catch (ex) {
+            // ignored
         } finally {
             this.deviceContainerService.purge();
         }
+    }
+
+    public async isLoggedIn(): Promise<boolean> {
+        return this.deviceContainerService.isLoggedIn();
     }
 
     private async getAuthenticationSession(emailAddress: string, password: string): Promise<AuthenticationSession> {
