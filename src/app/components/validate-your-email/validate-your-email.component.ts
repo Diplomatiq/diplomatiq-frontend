@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginService } from 'src/app/services/login.service';
 import { ApiService } from '../../services/api.service';
+import { LoginService } from '../../services/login.service';
 import { NotificationService } from '../../services/notification.service';
 import { SignupService } from '../../services/signup.service';
 

@@ -1,25 +1,23 @@
-<div id="mfa">
-    <h1>{{ heading }}</h1>
-    <p class="text-muted">{{ subheading }}</p>
-    <hr />
-    <form *ngIf="state === 'mfa'" (ngSubmit)="verifyCode()">
-        <div class="form-group">
-            <label for="verificationCode">Verification code</label>
-            <input
-                type="text"
-                inputmode="numeric"
-                [(ngModel)]="verificationCode"
-                name="verificationCode"
-                class="form-control"
-                id="verificationCode"
-                aria-describedby="verificationCode"
-                placeholder="Enter the code"
-                autofocus
-            />
-        </div>
-        <div>
-            <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Proceed</button>
-            <button class="btn btn-link" (click)="logout()">Log out</button>
-        </div>
-    </form>
-</div>
+<h1>{{ heading }}</h1>
+<p class="text-muted">{{ subheading }}</p>
+<hr />
+<form *ngIf="state === 'mfa'" (ngSubmit)="verifyCode()">
+    <div class="form-group">
+        <label for="verificationCode">Verification code</label>
+        <input
+            type="text"
+            inputmode="numeric"
+            [(ngModel)]="verificationCode"
+            name="verificationCode"
+            class="form-control"
+            id="verificationCode"
+            aria-describedby="verificationCode"
+            placeholder="Enter the code"
+            autofocus
+        />
+    </div>
+    <div>
+        <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Proceed</button>
+        <button class="btn btn-link" (click)="logout()">Log out</button>
+    </div>
+</form>

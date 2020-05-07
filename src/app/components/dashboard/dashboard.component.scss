@@ -1,3 +1,6 @@
 @import '../../../styles.scss';
 
-@include fullPageComponent;
+:host {
+    flex: 1 0 auto;
+    width: 100%;
+}
