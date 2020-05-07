@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
-import { UserIdentityService } from '../../services/userIdentity.service';
+import { SessionService } from '../../services/session.service';
 
 @Component({
     selector: 'diplomatiq-frontend-navbar',
@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
     public userEmailAddress: string;
 
     public constructor(
-        private readonly userIdentityService: UserIdentityService,
+        private readonly sessionService: SessionService,
         private readonly router: Router,
         private readonly loginService: LoginService,
     ) {}
@@ -22,7 +22,7 @@ export class NavbarComponent implements OnInit {
     public async ngOnInit(): Promise<void> {
         this.loginService.loggedIn.subscribe(
             async (): Promise<void> => {
-                const userIdentity = await this.userIdentityService.getUserIdentity();
+                const userIdentity = await this.sessionService.getUserIdentity();
                 this.userFullName = `${userIdentity.firstName} ${userIdentity.lastName}`;
                 this.userEmailAddress = userIdentity.emailAddress;
                 this.isUserMenuVisible = true;
@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
 
         const isLoggedIn = await this.loginService.isLoggedIn();
         if (isLoggedIn) {
-            const userIdentity = await this.userIdentityService.getUserIdentity();
+            const userIdentity = await this.sessionService.getUserIdentity();
             this.userFullName = `${userIdentity.firstName} ${userIdentity.lastName}`;
             this.userEmailAddress = userIdentity.emailAddress;
             this.isUserMenuVisible = true;

@@ -1,11 +1,11 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
 import { BigInteger } from 'jsbn';
-import { AuthenticationSession } from '../types/authenticationSession';
+import { AuthenticationSession } from '../types/authentication-session';
 import { AeadService } from './aead.service';
 import { ApiService } from './api.service';
 import { CryptoService } from './crypto.service';
-import { DeviceContainerService } from './deviceContainer.service';
+import { DeviceContainerService } from './device-container.service';
 import { SignupService } from './signup.service';
 import { SrpService } from './srp.service';
 

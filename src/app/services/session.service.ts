@@ -1,10 +1,27 @@
 import { Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
 import { RetryPolicy } from '@diplomatiq/resily';
-import { DiplomatiqApiException } from '../exceptions/diplomatiqApiException';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BigInteger } from 'jsbn';
+import { DiplomatiqApiErrorErrorCodeEnum, GetUserIdentityV1Response } from '../../openapi/api';
+import {
+    MfaRequestModalComponent,
+    MfaRequestModalResult,
+    MfaRequestModalResultEnum,
+} from '../components/modals/mfa-request-modal/mfa-request-modal.component';
+import {
+    PasswordRequestModalComponent,
+    PasswordRequestModalResult,
+    PasswordRequestModalResultEnum,
+} from '../components/modals/password-request-modal/password-request-modal.component';
+import { DiplomatiqApiException } from '../exceptions/diplomatiq-api-exception';
+import { OperationCancelledException } from '../exceptions/operation-cancelled-exception';
 import { AeadService } from './aead.service';
 import { ApiService } from './api.service';
-import { DeviceContainerService } from './deviceContainer.service';
+import { CryptoService } from './crypto.service';
+import { DeviceContainerService } from './device-container.service';
+import { NotificationService } from './notification.service';
+import { SrpService } from './srp.service';
 
 @Injectable({
     providedIn: 'root',
@@ -17,16 +34,30 @@ export class SessionService {
         private readonly apiService: ApiService,
         private readonly deviceContainerService: DeviceContainerService,
         private readonly aeadService: AeadService,
+        private readonly cryptoService: CryptoService,
+        private readonly srpService: SrpService,
+        private readonly modalService: NgbModal,
+        private readonly notificationService: NotificationService,
     ) {}
 
-    public async withSession<T>(apiCall: () => Promise<T>): Promise<T> {
+    public async getUserIdentity(): Promise<GetUserIdentityV1Response> {
+        return this.withRegularSession(
+            async (): Promise<GetUserIdentityV1Response> => {
+                return this.apiService.regularSessionMethodsApi.getUserIdentityV1();
+            },
+        );
+    }
+
+    public async withRegularSession<T>(apiCall: () => Promise<T>): Promise<T> {
         const sessionId = await this.deviceContainerService.getSessionId();
         if (sessionId === undefined) {
             await this.getNewSession();
         }
 
         const policy = new RetryPolicy<T>();
-        policy.reactOnException((ex: DiplomatiqApiException): boolean => ex.errorCode === 'Unauthorized');
+        policy.reactOnException(
+            (ex: DiplomatiqApiException): boolean => ex.errorCode === DiplomatiqApiErrorErrorCodeEnum.Unauthorized,
+        );
         policy.retryCount(1);
         policy.onRetry(
             async (): Promise<void> => {
@@ -34,6 +65,52 @@ export class SessionService {
             },
         );
         return policy.execute(async (): Promise<T> => apiCall());
+    }
+
+    public async withPasswordElevatedSession<T>(apiCall: () => Promise<T>): Promise<T> {
+        const policy = new RetryPolicy<T>();
+        policy.reactOnException(
+            (ex: DiplomatiqApiException): boolean =>
+                ex.errorCode === DiplomatiqApiErrorErrorCodeEnum.SessionElevationRequired,
+        );
+        policy.retryCount(1);
+        policy.onRetry(
+            async (): Promise<void> => {
+                await this.elevateSessionToPasswordElevated();
+            },
+        );
+        return policy.execute(
+            async (): Promise<T> => {
+                return this.withRegularSession(
+                    async (): Promise<T> => {
+                        return apiCall();
+                    },
+                );
+            },
+        );
+    }
+
+    public async withMultiFactorElevatedSession<T>(apiCall: () => Promise<T>): Promise<T> {
+        const policy = new RetryPolicy<T>();
+        policy.reactOnException(
+            (ex: DiplomatiqApiException): boolean =>
+                ex.errorCode === DiplomatiqApiErrorErrorCodeEnum.SessionElevationRequired,
+        );
+        policy.retryCount(1);
+        policy.onRetry(
+            async (): Promise<void> => {
+                await this.elevateSessionToMultiFactorElevated();
+            },
+        );
+        return policy.execute(
+            async (): Promise<T> => {
+                return this.withPasswordElevatedSession(
+                    async (): Promise<T> => {
+                        return apiCall();
+                    },
+                );
+            },
+        );
     }
 
     private async getNewSession(): Promise<void> {
@@ -50,5 +127,88 @@ export class SessionService {
         const { plaintext: sessionIdBytes } = await this.aeadService.fromBytes(sessionIdAeadBytes, deviceKey);
         const sessionId = this.stringConverter.decodeFromBytes(sessionIdBytes);
         this.deviceContainerService.setSessionId(sessionId);
+    }
+
+    private async elevateSessionToPasswordElevated(): Promise<void> {
+        const policy = new RetryPolicy<void>();
+        policy.reactOnException(
+            (ex: DiplomatiqApiException): boolean => ex.errorCode === DiplomatiqApiErrorErrorCodeEnum.Unauthorized,
+        );
+        policy.retryForever();
+        policy.onRetry((): void => {
+            this.notificationService.danger('Wrong password, please try again.');
+        });
+        await policy.execute(
+            async (): Promise<void> => {
+                const modal = this.modalService.open(PasswordRequestModalComponent);
+                const modalResult: PasswordRequestModalResult = await modal.result;
+                if (modalResult.result === PasswordRequestModalResultEnum.Cancel) {
+                    throw new OperationCancelledException();
+                }
+
+                const password = modalResult.password;
+
+                const { emailAddress } = await this.getUserIdentity();
+
+                const initResponse = await this.apiService.regularSessionMethodsApi.elevateRegularSessionInitV1();
+
+                const saltHex = initResponse.srpSaltHex;
+                const saltBytes = this.binaryConverter.decodeFromHex(saltHex);
+
+                const passwordBytes = this.stringConverter.encodeToBytes(password);
+                const passwordHashBytes = await this.cryptoService.scrypt(passwordBytes, saltBytes);
+                const passwordHashHex = this.binaryConverter.encodeToHex(passwordHashBytes);
+
+                const srpClient = this.srpService.getSrpClient();
+                srpClient.step1(emailAddress, passwordHashHex);
+
+                const saltBigInteger = new BigInteger(saltHex, 16);
+
+                const serverEphemeralHex = initResponse.serverEphemeralHex;
+                const serverEphemeralBigInteger = new BigInteger(serverEphemeralHex, 16);
+
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                const { A: clientEphemeral, M1: clientProof } = srpClient.step2(
+                    saltBigInteger,
+                    serverEphemeralBigInteger,
+                );
+
+                await this.apiService.regularSessionMethodsApi.elevateRegularSessionCompleteV1({
+                    elevateRegularSessionCompleteV1Request: {
+                        clientEphemeralHex: clientEphemeral.toString(16),
+                        clientProofHex: clientProof.toString(16),
+                        serverEphemeralHex,
+                    },
+                });
+            },
+        );
+    }
+
+    private async elevateSessionToMultiFactorElevated(): Promise<void> {
+        const policy = new RetryPolicy<void>();
+        policy.reactOnException(
+            (ex: DiplomatiqApiException): boolean => ex.errorCode === DiplomatiqApiErrorErrorCodeEnum.Unauthorized,
+        );
+        policy.retryForever();
+        policy.onRetry((): void => {
+            this.notificationService.danger('Wrong verification code, please try again.');
+        });
+        await policy.execute(
+            async (): Promise<void> => {
+                await this.apiService.passwordElevatedSessionMethodsApi.elevatePasswordElevatedSessionInitV1();
+
+                const modal = this.modalService.open(MfaRequestModalComponent);
+                const modalResult: MfaRequestModalResult = await modal.result;
+                if (modalResult.result === MfaRequestModalResultEnum.Cancel) {
+                    throw new OperationCancelledException();
+                }
+
+                await this.apiService.passwordElevatedSessionMethodsApi.elevatePasswordElevatedSessionCompleteV1({
+                    elevatePasswordElevatedSessionCompleteV1Request: {
+                        requestCode: modalResult.verificationCode,
+                    },
+                });
+            },
+        );
     }
 }

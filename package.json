@@ -40,7 +40,7 @@
     "@angular/router": "~9.1.4",
     "@diplomatiq/convertibles": "^1.0.0",
     "@diplomatiq/crypto-random": "^2.2.0",
-    "@diplomatiq/resily": "^1.1.0",
+    "@diplomatiq/resily": "^1.2.0",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "@types/scrypt-async": "^1.3.0",
     "bootstrap": "^4.4.1",

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DiplomatiqApiErrorErrorCodeEnum, DiplomatiqApiErrorFromJSON, ResponseContext } from '../../openapi/api';
-import { DiplomatiqApiException } from '../exceptions/diplomatiqApiException';
+import { DiplomatiqApiException } from '../exceptions/diplomatiq-api-exception';
 
 @Injectable({
     providedIn: 'root',

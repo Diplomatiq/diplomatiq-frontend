@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BigInteger } from 'jsbn';
 import { SRPClientSession, SRPConfig, SRPParameters } from 'tssrp6a';
 import { createVerifier } from 'tssrp6a/dist/utils';
-import { gHex, nHex } from '../constants/srpConstants';
-import { Srp6aRoutines } from '../utils/srp6aroutines';
+import { gHex, nHex } from '../constants/srp-constants';
+import { Srp6aRoutines } from '../utils/srp6a-routines';
 
 @Injectable({
     providedIn: 'root',

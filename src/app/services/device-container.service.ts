@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
-import { DeviceContainer } from '../types/deviceContainer';
+import { DeviceContainer } from '../types/device-container';
 import { Deferred } from '../utils/deferred';
 import { AeadService } from './aead.service';
 

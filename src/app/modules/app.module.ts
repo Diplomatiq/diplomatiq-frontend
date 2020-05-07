@@ -6,13 +6,16 @@ import { AppComponent } from '../components/app/app.component';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
 import { LoginComponent } from '../components/login/login.component';
 import { MfaComponent } from '../components/mfa/mfa.component';
+import { DeleteAccountModalComponent } from '../components/modals/delete-account-modal/delete-account-modal.component';
+import { MfaRequestModalComponent } from '../components/modals/mfa-request-modal/mfa-request-modal.component';
+import { PasswordRequestModalComponent } from '../components/modals/password-request-modal/password-request-modal.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { NotificationsComponent } from '../components/notification/notifications.component';
 import { SettingsComponent } from '../components/settings/settings.component';
 import { SignupComponent } from '../components/signup/signup.component';
 import { ValidateEmailAddressComponent } from '../components/validate-email-address/validate-email-address.component';
 import { ValidateYourEmailComponent } from '../components/validate-your-email/validate-your-email.component';
-import { AppInitializerService } from '../services/appInitializer.service';
+import { AppInitializerService } from '../services/app-initializer.service';
 import { AppRoutingModule } from './app-routing.module';
 
 function appInitializerFactory(appInitializerService: AppInitializerService): () => Promise<void> {
@@ -33,6 +36,9 @@ function appInitializerFactory(appInitializerService: AppInitializerService): ()
         DashboardComponent,
         SettingsComponent,
         ValidateYourEmailComponent,
+        DeleteAccountModalComponent,
+        PasswordRequestModalComponent,
+        MfaRequestModalComponent,
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule, NgbModule],
     providers: [

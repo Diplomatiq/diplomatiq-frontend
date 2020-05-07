@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    ChangePasswordV1Request,
+    ChangePasswordV1RequestFromJSON,
+    ChangePasswordV1RequestToJSON,
     DiplomatiqApiError,
     DiplomatiqApiErrorFromJSON,
     DiplomatiqApiErrorToJSON,
@@ -22,6 +25,10 @@ import {
     ElevatePasswordElevatedSessionCompleteV1RequestFromJSON,
     ElevatePasswordElevatedSessionCompleteV1RequestToJSON,
 } from '../models';
+
+export interface SessionMethodsPasswordElevatedSessionApiChangePasswordV1Request {
+    changePasswordV1Request: ChangePasswordV1Request;
+}
 
 export interface SessionMethodsPasswordElevatedSessionApiElevatePasswordElevatedSessionCompleteV1Request {
     elevatePasswordElevatedSessionCompleteV1Request: ElevatePasswordElevatedSessionCompleteV1Request;
@@ -31,6 +38,64 @@ export interface SessionMethodsPasswordElevatedSessionApiElevatePasswordElevated
  * no description
  */
 export class SessionMethodsPasswordElevatedSessionApi extends runtime.BaseAPI {
+
+    /**
+     * Changes the user\'s password to be able to authenticate with the new one.
+     * Change the user\'s password
+     */
+    async changePasswordV1Raw(requestParameters: SessionMethodsPasswordElevatedSessionApiChangePasswordV1Request): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.changePasswordV1Request === null || requestParameters.changePasswordV1Request === undefined) {
+            throw new runtime.RequiredError('changePasswordV1Request','Required parameter requestParameters.changePasswordV1Request was null or undefined when calling changePasswordV1.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/change-password-v1`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ChangePasswordV1RequestToJSON(requestParameters.changePasswordV1Request),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Changes the user\'s password to be able to authenticate with the new one.
+     * Change the user\'s password
+     */
+    async changePasswordV1(requestParameters: SessionMethodsPasswordElevatedSessionApiChangePasswordV1Request): Promise<void> {
+        await this.changePasswordV1Raw(requestParameters);
+    }
 
     /**
      * Verifies a multi-factor authentication code previously sent to the user\'s email address. If successful, the current session was elevated to `MultiFactorElevatedSession` assurance level.

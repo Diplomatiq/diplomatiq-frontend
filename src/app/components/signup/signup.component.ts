@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { EmailAddressValidationService } from '../../services/emailAddressValidation.service';
+import { EmailAddressValidationService } from '../../services/email-address-validation.service';
 import { NotificationService } from '../../services/notification.service';
 import { SignupService } from '../../services/signup.service';
 

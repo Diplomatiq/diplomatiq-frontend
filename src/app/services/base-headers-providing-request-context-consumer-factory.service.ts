@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FetchParams, RequestContext } from '../../openapi/api';
-import { BaseHeadersProviderService } from './baseHeadersProvider.service';
+import { BaseHeadersProviderService } from './base-headers-provider.service';
 
 @Injectable({
     providedIn: 'root',

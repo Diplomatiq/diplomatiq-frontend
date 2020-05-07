@@ -6,13 +6,14 @@ import {
     Configuration,
     ConfigurationParameters,
     DeviceMethodsApi,
+    SessionMethodsMultiFactorElevatedSessionApi,
     SessionMethodsPasswordElevatedSessionApi,
     SessionMethodsRegularSessionApi,
     UnauthenticatedMethodsApi,
 } from '../../openapi/api';
-import { DiplomatiqAuthenticationScheme } from '../types/diplomatiqAuthenticationScheme';
-import { AllHeadersProvidingRequestContextConsumerFactoryService } from './allHeadersProvidingRequestContextConsumerFactory.service';
-import { ApiErrorHandlingResponseContextConsumerFactoryService } from './apiErrorHandlingResponseContextConsumerFactory.service';
+import { DiplomatiqAuthenticationScheme } from '../types/diplomatiq-authentication-scheme';
+import { AllHeadersProvidingRequestContextConsumerFactoryService } from './all-headers-providing-request-context-consumer-factory.service';
+import { ApiErrorHandlingResponseContextConsumerFactoryService } from './api-error-handling-response-context-consumer-factory.service';
 
 @Injectable({
     providedIn: 'root',
@@ -27,6 +28,7 @@ export class ApiService {
 
     public readonly regularSessionMethodsApi: SessionMethodsRegularSessionApi;
     public readonly passwordElevatedSessionMethodsApi: SessionMethodsPasswordElevatedSessionApi;
+    public readonly multiFactorElevatedSessionMethodsApi: SessionMethodsMultiFactorElevatedSessionApi;
 
     public constructor(
         private readonly allHeadersProvidingRequestContextConsumerFactoryService: AllHeadersProvidingRequestContextConsumerFactoryService,
@@ -57,6 +59,9 @@ export class ApiService {
         );
         this.regularSessionMethodsApi = new SessionMethodsRegularSessionApi(sessionSignatureV1Configuration);
         this.passwordElevatedSessionMethodsApi = new SessionMethodsPasswordElevatedSessionApi(
+            sessionSignatureV1Configuration,
+        );
+        this.multiFactorElevatedSessionMethodsApi = new SessionMethodsMultiFactorElevatedSessionApi(
             sessionSignatureV1Configuration,
         );
     }

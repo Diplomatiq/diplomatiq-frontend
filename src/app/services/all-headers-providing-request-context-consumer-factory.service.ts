@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FetchParams, RequestContext } from '../../openapi/api';
-import { DiplomatiqAuthenticationScheme } from '../types/diplomatiqAuthenticationScheme';
-import { HeadersProviderService } from './headersProvider.service';
+import { DiplomatiqAuthenticationScheme } from '../types/diplomatiq-authentication-scheme';
+import { HeadersProviderService } from './headers-provider.service';
 
 @Injectable({
     providedIn: 'root',

@@ -81,6 +81,8 @@ export enum DiplomatiqApiErrorErrorCodeEnum {
     MethodNotAllowed = 'MethodNotAllowed',
     NotAcceptable = 'NotAcceptable',
     NotFound = 'NotFound',
+    SessionElevationRequired = 'SessionElevationRequired',
+    SessionExpired = 'SessionExpired',
     Unauthorized = 'Unauthorized',
     UnsupportedMediaType = 'UnsupportedMediaType'
 }

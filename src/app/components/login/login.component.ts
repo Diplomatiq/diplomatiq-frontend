@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DiplomatiqApiErrorErrorCodeEnum } from '../../../openapi/api';
-import { DiplomatiqApiException } from '../../exceptions/diplomatiqApiException';
-import { EmailAddressValidationService } from '../../services/emailAddressValidation.service';
+import { DiplomatiqApiException } from '../../exceptions/diplomatiq-api-exception';
+import { EmailAddressValidationService } from '../../services/email-address-validation.service';
 import { LoginService } from '../../services/login.service';
 import { NotificationService } from '../../services/notification.service';
 

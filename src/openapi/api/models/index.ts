@@ -1,3 +1,4 @@
+export * from './ChangePasswordV1Request';
 export * from './DiplomatiqApiError';
 export * from './ElevateAuthenticationSessionCompleteV1Request';
 export * from './ElevatePasswordElevatedSessionCompleteV1Request';

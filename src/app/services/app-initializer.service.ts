@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DefaultBinaryConverter } from '@diplomatiq/convertibles';
 import { ApiService } from './api.service';
-import { DeviceContainerService } from './deviceContainer.service';
+import { DeviceContainerService } from './device-container.service';
 
 @Injectable({
     providedIn: 'root',

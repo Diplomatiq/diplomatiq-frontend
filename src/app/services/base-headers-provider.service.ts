@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HTTPHeaders } from '../../openapi/api';
-import { clientId } from '../constants/clientId';
+import { clientId } from '../constants/client-id';
 
 @Injectable({
     providedIn: 'root',

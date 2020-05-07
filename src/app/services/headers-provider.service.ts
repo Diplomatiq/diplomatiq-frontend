@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
 import { HTTPHeaders } from '../../openapi/api/index';
-import { DiplomatiqAuthenticationScheme } from '../types/diplomatiqAuthenticationScheme';
-import { BaseHeadersProviderService } from './baseHeadersProvider.service';
+import { DiplomatiqAuthenticationScheme } from '../types/diplomatiq-authentication-scheme';
+import { BaseHeadersProviderService } from './base-headers-provider.service';
 import { CryptoService } from './crypto.service';
-import { DeviceContainerService } from './deviceContainer.service';
+import { DeviceContainerService } from './device-container.service';
 
 @Injectable({
     providedIn: 'root',

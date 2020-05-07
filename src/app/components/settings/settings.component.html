@@ -1,1 +1,25 @@
-<p>settings works!</p>
+<div class="container">
+    <h1>Settings</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header">Change your password</div>
+                <div class="card-body">
+                    <p class="card-text">Changing your password does not sign you out of your devices.</p>
+                    <button class="btn btn-primary">Change password</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-2">
+                <div class="card-header bg-danger text-white">Delete your account</div>
+                <div class="card-body">
+                    <p class="card-text">Delete your account with all your data stored in our systems.</p>
+                    <button (click)="deleteAccount()" class="btn btn-danger">Delete your account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
