@@ -12,7 +12,7 @@ import {
 } from '../../openapi/api';
 import { DiplomatiqAuthenticationScheme } from '../types/diplomatiqAuthenticationScheme';
 import { AllHeadersProvidingRequestContextConsumerFactoryService } from './allHeadersProvidingRequestContextConsumerFactory.service';
-import { ApiErrorHandlingResponseContextConsumerFactoryService } from './responseContextConsumerFactory.service';
+import { ApiErrorHandlingResponseContextConsumerFactoryService } from './apiErrorHandlingResponseContextConsumerFactory.service';
 
 @Injectable({
     providedIn: 'root',
