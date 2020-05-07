@@ -12,6 +12,7 @@ import { SignupComponent } from '../components/signup/signup.component';
 import { ValidateEmailAddressComponent } from '../components/validate-email-address/validate-email-address.component';
 import { AppInitializerService } from '../services/appInitializer.service';
 import { AppRoutingModule } from './app-routing.module';
+import { SettingsComponent } from '../components/settings/settings.component';
 
 function appInitializerFactory(appInitializerService: AppInitializerService): () => Promise<void> {
     return async (): Promise<void> => {
@@ -29,6 +30,7 @@ function appInitializerFactory(appInitializerService: AppInitializerService): ()
         SignupComponent,
         MfaComponent,
         DashboardComponent,
+        SettingsComponent,
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule, NgbModule],
     providers: [
