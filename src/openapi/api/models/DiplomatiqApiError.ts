@@ -76,6 +76,7 @@ export function DiplomatiqApiErrorToJSON(value?: DiplomatiqApiError | null): any
 export enum DiplomatiqApiErrorErrorCodeEnum {
     BadRequest = 'BadRequest',
     ClockDiscrepancy = 'ClockDiscrepancy',
+    EmailAddressNotValidated = 'EmailAddressNotValidated',
     InternalServerError = 'InternalServerError',
     MethodNotAllowed = 'MethodNotAllowed',
     NotAcceptable = 'NotAcceptable',

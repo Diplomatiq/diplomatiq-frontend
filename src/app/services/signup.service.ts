@@ -12,6 +12,8 @@ export class SignupService {
     private readonly binaryConverter = new DefaultBinaryConverter();
     private readonly stringConverter = new DefaultStringConverter();
 
+    private lastSignupEmailAddress?: string;
+
     public constructor(
         private readonly cryptoService: CryptoService,
         private readonly srpService: SrpService,
@@ -38,5 +40,17 @@ export class SignupService {
                 passwordStretchingAlgorithm: RegisterUserV1RequestPasswordStretchingAlgorithmEnum.ScryptV1,
             },
         });
+
+        this.setValidationEmailAddress(emailAddress);
+    }
+
+    public setValidationEmailAddress(emailAddress: string): void {
+        this.lastSignupEmailAddress = emailAddress;
+    }
+
+    public flushValidationEmailAddress(): string | undefined {
+        const emailAddress = this.lastSignupEmailAddress;
+        this.lastSignupEmailAddress = undefined;
+        return emailAddress;
     }
 }

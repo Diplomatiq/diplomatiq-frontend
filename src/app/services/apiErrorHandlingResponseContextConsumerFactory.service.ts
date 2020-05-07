@@ -14,7 +14,11 @@ export class ApiErrorHandlingResponseContextConsumerFactoryService {
                     const diplomatiqApiError = DiplomatiqApiErrorFromJSON(apiErrorJson);
                     throw new DiplomatiqApiException(diplomatiqApiError.errorCode, diplomatiqApiError.retryInformation);
                 } catch (ex) {
-                    throw new DiplomatiqApiException(DiplomatiqApiErrorErrorCodeEnum.InternalServerError);
+                    if (ex instanceof DiplomatiqApiException) {
+                        throw ex;
+                    } else {
+                        throw new DiplomatiqApiException(DiplomatiqApiErrorErrorCodeEnum.InternalServerError);
+                    }
                 }
             }
         };

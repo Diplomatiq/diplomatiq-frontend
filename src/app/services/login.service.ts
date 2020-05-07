@@ -6,7 +6,7 @@ import { AeadService } from './aead.service';
 import { ApiService } from './api.service';
 import { CryptoService } from './crypto.service';
 import { DeviceContainerService } from './deviceContainer.service';
-import { SessionService } from './session.service';
+import { SignupService } from './signup.service';
 import { SrpService } from './srp.service';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class LoginService {
         private readonly apiService: ApiService,
         private readonly aeadService: AeadService,
         private readonly deviceContainerService: DeviceContainerService,
-        private readonly sessionService: SessionService,
+        private readonly signupService: SignupService,
     ) {}
 
     public async initLogin(emailAddress: string, password: string): Promise<void> {
@@ -35,6 +35,8 @@ export class LoginService {
             this.deviceContainerService.initializeTemporaryEmptyContainer();
             await this.deviceContainerService.setAuthenticationSessionId(authenticationSession.id);
             await this.deviceContainerService.setAuthenticationSessionKey(authenticationSession.key);
+
+            this.signupService.setValidationEmailAddress(emailAddress);
 
             await this.apiService.passwordElevatedAuthenticationSessionMethodsApi.elevateAuthenticationSessionInitV1();
         } catch (ex) {
@@ -49,6 +51,8 @@ export class LoginService {
                 requestCode: `${verificationCode}`,
             },
         });
+
+        this.signupService.flushValidationEmailAddress();
 
         try {
             const {

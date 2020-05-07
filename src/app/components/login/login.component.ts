@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { DiplomatiqApiErrorErrorCodeEnum } from '../../../openapi/api';
+import { DiplomatiqApiException } from '../../exceptions/diplomatiqApiException';
 import { EmailAddressValidationService } from '../../services/emailAddressValidation.service';
 import { LoginService } from '../../services/login.service';
 import { NotificationService } from '../../services/notification.service';
@@ -53,9 +55,16 @@ export class LoginComponent {
             ]);
             await this.router.navigateByUrl('mfa');
         } catch (ex) {
-            this.notificationService.danger("We couldn't log you in. Please check your credentials.");
-            this.password = '';
-            this.state = 'login';
+            if (
+                ex instanceof DiplomatiqApiException &&
+                ex.errorCode === DiplomatiqApiErrorErrorCodeEnum.EmailAddressNotValidated
+            ) {
+                await this.router.navigateByUrl('validate-your-email');
+            } else {
+                this.notificationService.danger("We couldn't log you in. Please check your credentials.");
+                this.password = '';
+                this.state = 'login';
+            }
         }
     }
 

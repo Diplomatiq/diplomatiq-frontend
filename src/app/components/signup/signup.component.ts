@@ -10,7 +10,7 @@ import { SignupService } from '../../services/signup.service';
     styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent {
-    public state: 'signup' | 'signup-progress' | 'signup-complete' = 'signup';
+    public state: 'signup' | 'signup-progress' = 'signup';
 
     public emailAddress = '';
     public password = '';
@@ -23,8 +23,6 @@ export class SignupComponent {
                 return 'Sign up for Diplomatiq';
             case 'signup-progress':
                 return 'Signing you up…';
-            case 'signup-complete':
-                return 'Validate your email address';
         }
     }
 
@@ -34,8 +32,6 @@ export class SignupComponent {
                 return 'Experience the power of the diplomatiq networking.';
             case 'signup-progress':
                 return 'Please wait.';
-            case 'signup-complete':
-                return 'You should have received an email by now. Please visit your inbox.';
         }
     }
 
@@ -81,7 +77,7 @@ export class SignupComponent {
                 this.signupService.signup(this.emailAddress, this.password, this.firstName, this.lastName),
                 new Promise((resolve): unknown => setTimeout(resolve, 3000)),
             ]);
-            this.state = 'signup-complete';
+            await this.router.navigateByUrl('validate-your-email');
         } catch (ex) {
             this.notificationService.danger('An error happened. Please try again later.');
             this.password = '';

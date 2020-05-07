@@ -67,6 +67,10 @@ export interface UnauthenticatedMethodsApiRequestPasswordResetV1Request {
     requestPasswordResetV1Request: RequestPasswordResetV1Request;
 }
 
+export interface UnauthenticatedMethodsApiResendValidationEmailRequest {
+    emailAddress: string;
+}
+
 export interface UnauthenticatedMethodsApiResetPasswordV1Request {
     resetPasswordV1Request: ResetPasswordV1Request;
 }
@@ -252,6 +256,41 @@ export class UnauthenticatedMethodsApi extends runtime.BaseAPI {
      */
     async requestPasswordResetV1(requestParameters: UnauthenticatedMethodsApiRequestPasswordResetV1Request): Promise<void> {
         await this.requestPasswordResetV1Raw(requestParameters);
+    }
+
+    /**
+     * Resends the validation email to a registered user\'s email address if the user exists and not already validated their email address. Does not throw to avoid revealing user data.
+     * Resend the validation email to a registered user
+     */
+    async resendValidationEmailRaw(requestParameters: UnauthenticatedMethodsApiResendValidationEmailRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.emailAddress === null || requestParameters.emailAddress === undefined) {
+            throw new runtime.RequiredError('emailAddress','Required parameter requestParameters.emailAddress was null or undefined when calling resendValidationEmail.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.emailAddress !== undefined) {
+            queryParameters['emailAddress'] = requestParameters.emailAddress;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/resend-validation-email-v1`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Resends the validation email to a registered user\'s email address if the user exists and not already validated their email address. Does not throw to avoid revealing user data.
+     * Resend the validation email to a registered user
+     */
+    async resendValidationEmail(requestParameters: UnauthenticatedMethodsApiResendValidationEmailRequest): Promise<void> {
+        await this.resendValidationEmailRaw(requestParameters);
     }
 
     /**

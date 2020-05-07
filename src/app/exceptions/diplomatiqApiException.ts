@@ -2,7 +2,7 @@ import { DiplomatiqApiError, DiplomatiqApiErrorErrorCodeEnum, RetryInformation }
 
 export class DiplomatiqApiException extends Error implements DiplomatiqApiError {
     public constructor(
-        public errorCode: DiplomatiqApiErrorErrorCodeEnum,
+        public readonly errorCode: DiplomatiqApiErrorErrorCodeEnum,
         public readonly retryInformation?: RetryInformation,
     ) {
         super();
