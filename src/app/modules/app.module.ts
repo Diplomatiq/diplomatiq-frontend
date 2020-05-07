@@ -8,12 +8,12 @@ import { LoginComponent } from '../components/login/login.component';
 import { MfaComponent } from '../components/mfa/mfa.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { NotificationsComponent } from '../components/notification/notifications.component';
+import { SettingsComponent } from '../components/settings/settings.component';
 import { SignupComponent } from '../components/signup/signup.component';
 import { ValidateEmailAddressComponent } from '../components/validate-email-address/validate-email-address.component';
+import { ValidateYourEmailComponent } from '../components/validate-your-email/validate-your-email.component';
 import { AppInitializerService } from '../services/appInitializer.service';
 import { AppRoutingModule } from './app-routing.module';
-import { SettingsComponent } from '../components/settings/settings.component';
-import { ValidateYourEmailComponent } from '../components/validate-your-email/validate-your-email.component';
 
 function appInitializerFactory(appInitializerService: AppInitializerService): () => Promise<void> {
     return async (): Promise<void> => {

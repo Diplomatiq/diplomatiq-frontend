@@ -29,6 +29,13 @@ body {
     font-family: 'Helvetica Neue', sans-serif;
 }
 
+@mixin fullPageComponent {
+    :host {
+        flex: 1 0 auto;
+        width: 100%;
+    }
+}
+
 @import '../node_modules/bootstrap/scss/bootstrap';
 
 /* Importing Bootstrap SCSS file. */
