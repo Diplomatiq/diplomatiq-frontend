@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/services/api.service';
+import { ApiService } from '../../services/api.service';
 import { LoginService } from '../../services/login.service';
 import { NotificationService } from '../../services/notification.service';
 
