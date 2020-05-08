@@ -1,0 +1,9 @@
+@import '../../../styles.scss';
+
+:host {
+    position: fixed;
+    z-index: $zindex-notification;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+}

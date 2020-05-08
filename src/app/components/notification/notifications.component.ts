@@ -5,7 +5,7 @@ import { Notification } from '../../types/notification';
 @Component({
     selector: 'diplomatiq-frontend-notifications',
     templateUrl: './notifications.component.html',
-    host: { '[class.ngb-toasts]': 'true' },
+    styleUrls: ['./notifications.component.scss'],
 })
 export class NotificationsComponent {
     public get notifications(): Notification[] {

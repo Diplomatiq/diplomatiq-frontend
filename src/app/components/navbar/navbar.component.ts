@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NotificationService } from 'src/app/services/notification.service';
 import { LoginService } from '../../services/login.service';
 import { SessionService } from '../../services/session.service';
 
@@ -17,6 +18,7 @@ export class NavbarComponent implements OnInit {
         private readonly sessionService: SessionService,
         private readonly router: Router,
         private readonly loginService: LoginService,
+        private readonly notificationService: NotificationService,
     ) {}
 
     public async ngOnInit(): Promise<void> {
@@ -50,5 +52,6 @@ export class NavbarComponent implements OnInit {
     public async logout(): Promise<void> {
         await this.loginService.logout();
         await this.router.navigateByUrl('login');
+        this.notificationService.success('You have successfully logged out.');
     }
 }
