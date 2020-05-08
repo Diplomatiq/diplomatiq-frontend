@@ -146,40 +146,10 @@ export class SessionService {
                     throw new OperationCancelledException();
                 }
 
+                const { emailAddress } = await this.getUserIdentity();
                 const password = modalResult.password;
 
-                const { emailAddress } = await this.getUserIdentity();
-
-                const initResponse = await this.apiService.regularSessionMethodsApi.elevateRegularSessionInitV1();
-
-                const saltHex = initResponse.srpSaltHex;
-                const saltBytes = this.binaryConverter.decodeFromHex(saltHex);
-
-                const passwordBytes = this.stringConverter.encodeToBytes(password);
-                const passwordHashBytes = await this.cryptoService.scrypt(passwordBytes, saltBytes);
-                const passwordHashHex = this.binaryConverter.encodeToHex(passwordHashBytes);
-
-                const srpClient = this.srpService.getSrpClient();
-                srpClient.step1(emailAddress, passwordHashHex);
-
-                const saltBigInteger = new BigInteger(saltHex, 16);
-
-                const serverEphemeralHex = initResponse.serverEphemeralHex;
-                const serverEphemeralBigInteger = new BigInteger(serverEphemeralHex, 16);
-
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                const { A: clientEphemeral, M1: clientProof } = srpClient.step2(
-                    saltBigInteger,
-                    serverEphemeralBigInteger,
-                );
-
-                await this.apiService.regularSessionMethodsApi.elevateRegularSessionCompleteV1({
-                    elevateRegularSessionCompleteV1Request: {
-                        clientEphemeralHex: clientEphemeral.toString(16),
-                        clientProofHex: clientProof.toString(16),
-                        serverEphemeralHex,
-                    },
-                });
+                await this.performPasswordVerificationHandshake(emailAddress, password);
             },
         );
     }
@@ -212,7 +182,7 @@ export class SessionService {
         );
     }
 
-    private async performSrp(emailAddress: string, password: string): Promise<void> {
+    private async performPasswordVerificationHandshake(emailAddress: string, password: string): Promise<void> {
         const initResponse = await this.apiService.regularSessionMethodsApi.elevateRegularSessionInitV1();
 
         const saltHex = initResponse.srpSaltHex;
