@@ -26,6 +26,10 @@ export class PasswordRequestModalComponent {
 
     public constructor(private readonly activeModal: NgbActiveModal) {}
 
+    public validateForm(): boolean {
+        return this.password !== '';
+    }
+
     public cancel(): void {
         this.activeModal.close({
             result: PasswordRequestModalResultEnum.Cancel,

@@ -26,6 +26,10 @@ export class MfaRequestModalComponent {
 
     public constructor(private readonly activeModal: NgbActiveModal) {}
 
+    public validateForm(): boolean {
+        return this.verificationCode !== '';
+    }
+
     public cancel(): void {
         this.activeModal.close({
             result: MfaRequestModalResultEnum.Cancel,
