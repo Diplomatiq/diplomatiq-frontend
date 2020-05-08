@@ -5,11 +5,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '../components/app/app.component';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
 import { LoginComponent } from '../components/login/login.component';
+import { LogoutComponent } from '../components/logout/logout.component';
 import { MfaComponent } from '../components/mfa/mfa.component';
 import { ChangePasswordModalComponent } from '../components/modals/change-password-modal/change-password-modal.component';
 import { DeleteAccountModalComponent } from '../components/modals/delete-account-modal/delete-account-modal.component';
+import { ForgotPasswordModalComponent } from '../components/modals/forgot-password-modal/forgot-password-modal.component';
 import { MfaRequestModalComponent } from '../components/modals/mfa-request-modal/mfa-request-modal.component';
 import { PasswordRequestModalComponent } from '../components/modals/password-request-modal/password-request-modal.component';
+import { ResetPasswordModalComponent } from '../components/modals/reset-password-modal/reset-password-modal.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { NotificationsComponent } from '../components/notification/notifications.component';
 import { SettingsComponent } from '../components/settings/settings.component';
@@ -18,7 +21,6 @@ import { ValidateEmailAddressComponent } from '../components/validate-email-addr
 import { ValidateYourEmailComponent } from '../components/validate-your-email/validate-your-email.component';
 import { AppInitializerService } from '../services/app-initializer.service';
 import { AppRoutingModule } from './app-routing.module';
-import { LogoutComponent } from '../components/logout/logout.component';
 
 function appInitializerFactory(appInitializerService: AppInitializerService): () => Promise<void> {
     return async (): Promise<void> => {
@@ -43,6 +45,8 @@ function appInitializerFactory(appInitializerService: AppInitializerService): ()
         MfaRequestModalComponent,
         ChangePasswordModalComponent,
         LogoutComponent,
+        ForgotPasswordModalComponent,
+        ResetPasswordModalComponent,
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule, NgbModule],
     providers: [

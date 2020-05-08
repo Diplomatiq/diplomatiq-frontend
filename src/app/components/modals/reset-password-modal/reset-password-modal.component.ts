@@ -1,27 +1,27 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-export enum ChangePasswordModalResultEnum {
+export enum ResetPasswordModalResultEnum {
     Cancel,
     Confirm,
 }
 
-export type ChangePasswordModalResult =
+export type ResetPasswordModalResult =
     | {
-          result: ChangePasswordModalResultEnum.Cancel;
+          result: ResetPasswordModalResultEnum.Cancel;
           newPassword: undefined;
       }
     | {
-          result: ChangePasswordModalResultEnum.Confirm;
+          result: ResetPasswordModalResultEnum.Confirm;
           newPassword: string;
       };
 
 @Component({
-    selector: 'diplomatiq-frontend-change-password-modal',
-    templateUrl: './change-password-modal.component.html',
-    styleUrls: ['./change-password-modal.component.scss'],
+    selector: 'diplomatiq-frontend-reset-password-modal',
+    templateUrl: './reset-password-modal.component.html',
+    styleUrls: ['./reset-password-modal.component.scss'],
 })
-export class ChangePasswordModalComponent {
+export class ResetPasswordModalComponent {
     public newPassword = '';
 
     public constructor(private readonly activeModal: NgbActiveModal) {}
@@ -32,14 +32,14 @@ export class ChangePasswordModalComponent {
 
     public cancel(): void {
         this.activeModal.close({
-            result: ChangePasswordModalResultEnum.Cancel,
+            result: ResetPasswordModalResultEnum.Cancel,
             newPassword: undefined,
         });
     }
 
     public confirm(): void {
         this.activeModal.close({
-            result: ChangePasswordModalResultEnum.Confirm,
+            result: ResetPasswordModalResultEnum.Confirm,
             newPassword: this.newPassword,
         });
     }

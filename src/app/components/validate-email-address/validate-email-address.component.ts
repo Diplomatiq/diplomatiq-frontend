@@ -27,7 +27,10 @@ export class ValidateEmailAddressComponent implements OnInit {
         } catch (ex) {
             this.notificationService.danger('An error happened. Please try again later.');
         } finally {
-            await this.router.navigateByUrl('login');
+            const emailAddress = this.activatedRoute.snapshot.queryParamMap.get('email-address');
+            await this.router.navigate(['login'], {
+                queryParams: { 'email-address': emailAddress },
+            });
         }
     }
 }

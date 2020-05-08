@@ -20,9 +20,9 @@
             </div>
         </div>
         <div class="modal-footer d-flex flex-row justify-content-between">
-            <button (click)="resendVerificationCode()" class="btn btn-light">Resend code</button>
+            <button type="button" (click)="resendVerificationCode()" class="btn btn-light">Resend code</button>
             <div>
-                <button (click)="cancel()" class="btn btn-link">Cancel</button>
+                <button type="button" (click)="cancel()" class="btn btn-link">Cancel</button>
                 <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Continue</button>
             </div>
         </div>
