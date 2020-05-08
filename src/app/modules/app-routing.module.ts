@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
 import { LoginComponent } from '../components/login/login.component';
+import { LogoutComponent } from '../components/logout/logout.component';
 import { MfaComponent } from '../components/mfa/mfa.component';
 import { SettingsComponent } from '../components/settings/settings.component';
 import { SignupComponent } from '../components/signup/signup.component';
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: 'validate-email-address', component: ValidateEmailAddressComponent, canActivate: [NotLoggedInGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [LoggedInGuard] },
     { path: 'settings', component: SettingsComponent, canActivate: [LoggedInGuard] },
+    { path: 'logout', component: LogoutComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
 

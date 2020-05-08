@@ -100,11 +100,11 @@ export class LoginService {
     public async logout(): Promise<void> {
         try {
             await this.apiService.deviceMethodsApi.logoutV1();
-            this.loggedOut.emit();
         } catch (ex) {
             // ignored
         } finally {
             this.deviceContainerService.purge();
+            this.loggedOut.emit();
         }
     }
 

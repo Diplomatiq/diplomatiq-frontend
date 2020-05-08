@@ -18,6 +18,7 @@ import { ValidateEmailAddressComponent } from '../components/validate-email-addr
 import { ValidateYourEmailComponent } from '../components/validate-your-email/validate-your-email.component';
 import { AppInitializerService } from '../services/app-initializer.service';
 import { AppRoutingModule } from './app-routing.module';
+import { LogoutComponent } from '../components/logout/logout.component';
 
 function appInitializerFactory(appInitializerService: AppInitializerService): () => Promise<void> {
     return async (): Promise<void> => {
@@ -41,6 +42,7 @@ function appInitializerFactory(appInitializerService: AppInitializerService): ()
         PasswordRequestModalComponent,
         MfaRequestModalComponent,
         ChangePasswordModalComponent,
+        LogoutComponent,
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule, NgbModule],
     providers: [
