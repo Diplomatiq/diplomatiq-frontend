@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 import { LoginService } from '../../services/login.service';
 import { NotificationService } from '../../services/notification.service';
 
@@ -34,6 +35,7 @@ export class MfaComponent {
     public constructor(
         private readonly loginService: LoginService,
         private readonly notificationService: NotificationService,
+        private readonly apiService: ApiService,
         private readonly router: Router,
     ) {}
 
@@ -61,5 +63,10 @@ export class MfaComponent {
         /* noawait */ this.loginService.logout();
         await this.router.navigateByUrl('login');
         this.notificationService.success('You have successfully logged out.');
+    }
+
+    public async resendVerificationCode(): Promise<void> {
+        await this.apiService.passwordElevatedAuthenticationSessionMethodsApi.elevateAuthenticationSessionInitV1();
+        this.notificationService.success('The code was sent to your email.');
     }
 }

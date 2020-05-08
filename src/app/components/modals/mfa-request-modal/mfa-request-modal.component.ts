@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export enum MfaRequestModalResultEnum {
     Cancel,
     Confirm,
+    ResendVerificationCode,
 }
 
 export type MfaRequestModalResult =
@@ -14,6 +15,10 @@ export type MfaRequestModalResult =
     | {
           result: MfaRequestModalResultEnum.Confirm;
           verificationCode: string;
+      }
+    | {
+          result: MfaRequestModalResultEnum.ResendVerificationCode;
+          verificationCode: undefined;
       };
 
 @Component({
@@ -28,6 +33,13 @@ export class MfaRequestModalComponent {
 
     public validateForm(): boolean {
         return this.verificationCode !== '';
+    }
+
+    public resendVerificationCode(): void {
+        this.activeModal.close({
+            result: MfaRequestModalResultEnum.ResendVerificationCode,
+            verificationCode: undefined,
+        });
     }
 
     public cancel(): void {

@@ -13,11 +13,13 @@
             id="verificationCode"
             aria-describedby="verificationCode"
             placeholder="Enter the code"
-            autofocus
         />
     </div>
-    <div>
-        <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Proceed</button>
-        <button class="btn btn-link" (click)="logout()">Log out</button>
+    <div class="d-flex flex-row justify-content-between">
+        <div>
+            <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Proceed</button>
+            <button type="button" class="btn btn-link" (click)="logout()">Log out</button>
+        </div>
+        <button type="button" class="btn btn-light" (click)="resendVerificationCode()">Resend code</button>
     </div>
 </form>

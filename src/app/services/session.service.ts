@@ -16,6 +16,7 @@ import {
 } from '../components/modals/password-request-modal/password-request-modal.component';
 import { DiplomatiqApiException } from '../exceptions/diplomatiq-api-exception';
 import { OperationCancelledException } from '../exceptions/operation-cancelled-exception';
+import { ResendMfaVerificationCodeException } from '../exceptions/resend-verification-code-exception';
 import { AeadService } from './aead.service';
 import { ApiService } from './api.service';
 import { CryptoService } from './crypto.service';
@@ -156,21 +157,53 @@ export class SessionService {
 
     private async elevateSessionToMultiFactorElevated(): Promise<void> {
         const policy = new RetryPolicy<void>();
-        policy.reactOnException(
-            (ex: DiplomatiqApiException): boolean => ex.errorCode === DiplomatiqApiErrorErrorCodeEnum.Unauthorized,
-        );
-        policy.retryForever();
-        policy.onRetry((): void => {
-            this.notificationService.danger('Wrong verification code, please try again.');
+
+        policy.reactOnException((ex: Error): boolean => {
+            if (ex instanceof DiplomatiqApiException) {
+                return ex.errorCode === DiplomatiqApiErrorErrorCodeEnum.Unauthorized;
+            }
+
+            if (ex instanceof ResendMfaVerificationCodeException) {
+                return true;
+            }
+
+            return false;
         });
+
+        policy.retryForever();
+
+        policy.onRetry(
+            async (
+                _result: void,
+                error: DiplomatiqApiException | ResendMfaVerificationCodeException,
+            ): Promise<void> => {
+                if (
+                    error instanceof DiplomatiqApiException &&
+                    error.errorCode === DiplomatiqApiErrorErrorCodeEnum.Unauthorized
+                ) {
+                    this.notificationService.danger('Wrong verification code, please try again.');
+                }
+
+                if (error instanceof ResendMfaVerificationCodeException) {
+                    await this.apiService.passwordElevatedSessionMethodsApi.elevatePasswordElevatedSessionInitV1();
+                    this.notificationService.success('The code was sent to your email.');
+                }
+            },
+        );
+
+        await this.apiService.passwordElevatedSessionMethodsApi.elevatePasswordElevatedSessionInitV1();
+
         await policy.execute(
             async (): Promise<void> => {
-                await this.apiService.passwordElevatedSessionMethodsApi.elevatePasswordElevatedSessionInitV1();
-
                 const modal = this.modalService.open(MfaRequestModalComponent);
                 const modalResult: MfaRequestModalResult = await modal.result;
+
                 if (modalResult.result === MfaRequestModalResultEnum.Cancel) {
                     throw new OperationCancelledException();
+                }
+
+                if (modalResult.result === MfaRequestModalResultEnum.ResendVerificationCode) {
+                    throw new ResendMfaVerificationCodeException();
                 }
 
                 await this.apiService.passwordElevatedSessionMethodsApi.elevatePasswordElevatedSessionCompleteV1({
