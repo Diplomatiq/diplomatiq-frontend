@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { SessionService } from '../../services/session.service';
 
 @Component({
@@ -7,6 +8,8 @@ import { SessionService } from '../../services/session.service';
     styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+    public readonly faPlusSquare = faPlusSquare;
+
     public emailAddress: string;
 
     public constructor(private readonly sessionService: SessionService) {}

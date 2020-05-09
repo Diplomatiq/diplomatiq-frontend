@@ -38,7 +38,7 @@
                             "src/assets",
                             "src/web.config"
                         ],
-                        "styles": ["src/styles.scss"],
+                        "styles": ["src/styles/main.scss"],
                         "scripts": []
                     },
                     "configurations": {
@@ -99,7 +99,7 @@
                         "tsConfig": "tsconfig.spec.json",
                         "karmaConfig": "karma.conf.js",
                         "assets": ["src/favicon.ico", "src/assets"],
-                        "styles": ["src/styles.scss"],
+                        "styles": ["src/styles/main.scss"],
                         "scripts": [],
                         "codeCoverage": true
                     }

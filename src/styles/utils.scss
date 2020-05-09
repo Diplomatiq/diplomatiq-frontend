@@ -1,0 +1,13 @@
+.scroll-parent {
+    @include media-breakpoint-up(md) {
+        height: 100%;
+        overflow: hidden;
+    }
+}
+
+.scroll {
+    @include media-breakpoint-up(md) {
+        height: 100%;
+        overflow: auto;
+    }
+}

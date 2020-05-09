@@ -1,0 +1,28 @@
+@import '../../../styles/main';
+
+:host {
+    height: 100%;
+}
+
+#component-wrapper-root {
+    height: 100%;
+    padding-top: $spacer;
+
+    #component-wrapper-header {
+        hr {
+            margin: 0;
+        }
+    }
+
+    #component-wrapper-content {
+        height: 100%;
+        padding: 20px 0;
+
+        @include media-breakpoint-down(md) {
+            overflow: auto;
+        }
+        @include media-breakpoint-up(md) {
+            overflow: hidden;
+        }
+    }
+}

@@ -1,7 +1,7 @@
-@import '../../../styles.scss';
+@import '../../../styles/main';
 
-:host {
-    flex: 1 0 auto;
-    width: 100%;
-    display: flex;
+@include full-page-component;
+
+#card-organize-conference {
+    cursor: pointer;
 }

@@ -1,8 +1,8 @@
-@import '../../../styles.scss';
+@import '../../../styles/main';
 
 :host {
     background-color: $color-4;
-    height: 70px;
+    height: $navbar-height;
     padding: 10px;
     display: flex;
     align-items: center;

@@ -127,7 +127,7 @@ export class SessionService {
         const sessionIdAeadBytes = this.binaryConverter.decodeFromBase64(sessionIdAeadBase64);
         const { plaintext: sessionIdBytes } = await this.aeadService.fromBytes(sessionIdAeadBytes, deviceKey);
         const sessionId = this.stringConverter.decodeFromBytes(sessionIdBytes);
-        this.deviceContainerService.setSessionId(sessionId);
+        await this.deviceContainerService.setSessionId(sessionId);
     }
 
     private async elevateSessionToPasswordElevated(): Promise<void> {

@@ -1,4 +1,4 @@
-@import '../../../styles.scss';
+@import '../../../styles/main';
 
 #main-container {
     width: 100vw;
@@ -8,11 +8,11 @@
     flex-direction: column;
 
     #router-container {
+        max-height: calc(100% - #{$navbar-height});
         display: flex;
         flex: 1 0 auto;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 20px;
     }
 }

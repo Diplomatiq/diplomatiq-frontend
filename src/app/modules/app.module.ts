@@ -1,6 +1,7 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '../components/app/app.component';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
@@ -21,6 +22,7 @@ import { ValidateEmailAddressComponent } from '../components/validate-email-addr
 import { ValidateYourEmailComponent } from '../components/validate-your-email/validate-your-email.component';
 import { AppInitializerService } from '../services/app-initializer.service';
 import { AppRoutingModule } from './app-routing.module';
+import { ComponentWrapperComponent } from '../components/component-wrapper/component-wrapper.component';
 
 function appInitializerFactory(appInitializerService: AppInitializerService): () => Promise<void> {
     return async (): Promise<void> => {
@@ -47,8 +49,9 @@ function appInitializerFactory(appInitializerService: AppInitializerService): ()
         LogoutComponent,
         ForgotPasswordModalComponent,
         ResetPasswordModalComponent,
+        ComponentWrapperComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, FormsModule, NgbModule],
+    imports: [BrowserModule, AppRoutingModule, FormsModule, NgbModule, FontAwesomeModule],
     providers: [
         {
             provide: APP_INITIALIZER,
