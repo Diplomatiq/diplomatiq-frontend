@@ -1,143 +1,28 @@
-<div class="container d-flex flex-column mh-100 overflow-hidden">
-    <div>
-        <h1>Settings</h1>
-        <hr />
-    </div>
-
-    <div class="mh-100 overflow-auto">
-        <div class="row">
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header">Change your password</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Changing your password does not sign you out of your devices.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="changePassword()" class="btn btn-primary">Change password</button>
-                    </div>
+<diplomatiq-frontend-component-wrapper [title]="'Settings'">
+    <div class="row">
+        <div class="col-md-6 mb-3 d-flex flex-column">
+            <div class="card flex-grow-1">
+                <div class="card-header">Change your password</div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Changing your password does not sign you out of your devices.
+                    </p>
                 </div>
-            </div>
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header bg-danger text-white">Delete your account</div>
-                    <div class="card-body">
-                        <p class="card-text">Delete your account with all your data stored in our systems.</p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="deleteAccount()" class="btn btn-danger">Delete your account</button>
-                    </div>
+                <div class="card-footer">
+                    <button (click)="changePassword()" class="btn btn-primary">Change password</button>
                 </div>
             </div>
         </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header">Change your password</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Changing your password does not sign you out of your devices.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="changePassword()" class="btn btn-primary">Change password</button>
-                    </div>
+        <div class="col-md-6 mb-3 d-flex flex-column">
+            <div class="card flex-grow-1">
+                <div class="card-header bg-danger text-white">Delete your account</div>
+                <div class="card-body">
+                    <p class="card-text">Delete your account with all your data stored in our systems.</p>
                 </div>
-            </div>
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header bg-danger text-white">Delete your account</div>
-                    <div class="card-body">
-                        <p class="card-text">Delete your account with all your data stored in our systems.</p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="deleteAccount()" class="btn btn-danger">Delete your account</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header">Change your password</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Changing your password does not sign you out of your devices.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="changePassword()" class="btn btn-primary">Change password</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header bg-danger text-white">Delete your account</div>
-                    <div class="card-body">
-                        <p class="card-text">Delete your account with all your data stored in our systems.</p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="deleteAccount()" class="btn btn-danger">Delete your account</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header">Change your password</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Changing your password does not sign you out of your devices.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="changePassword()" class="btn btn-primary">Change password</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header bg-danger text-white">Delete your account</div>
-                    <div class="card-body">
-                        <p class="card-text">Delete your account with all your data stored in our systems.</p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="deleteAccount()" class="btn btn-danger">Delete your account</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header">Change your password</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Changing your password does not sign you out of your devices.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="changePassword()" class="btn btn-primary">Change password</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 d-flex">
-                <div class="card">
-                    <div class="card-header bg-danger text-white">Delete your account</div>
-                    <div class="card-body">
-                        <p class="card-text">Delete your account with all your data stored in our systems.</p>
-                    </div>
-                    <div class="card-footer">
-                        <button (click)="deleteAccount()" class="btn btn-danger">Delete your account</button>
-                    </div>
+                <div class="card-footer">
+                    <button (click)="deleteAccount()" class="btn btn-danger">Delete your account</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</diplomatiq-frontend-component-wrapper>

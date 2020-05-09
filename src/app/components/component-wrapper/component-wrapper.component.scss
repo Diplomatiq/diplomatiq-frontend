@@ -17,12 +17,6 @@
     #component-wrapper-content {
         height: 100%;
         padding: 20px 0;
-
-        @include media-breakpoint-down(md) {
-            overflow: auto;
-        }
-        @include media-breakpoint-up(md) {
-            overflow: hidden;
-        }
+        overflow: auto;
     }
 }
