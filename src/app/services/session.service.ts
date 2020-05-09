@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DefaultBinaryConverter, DefaultStringConverter } from '@diplomatiq/convertibles';
-import { RetryPolicy } from '@diplomatiq/resily';
+import { CachePolicy, RetryPolicy } from '@diplomatiq/resily';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BigInteger } from 'jsbn';
 import { DiplomatiqApiErrorErrorCodeEnum, GetUserIdentityV1Response } from '../../openapi/api';
@@ -31,6 +31,8 @@ export class SessionService {
     private readonly binaryConverter = new DefaultBinaryConverter();
     private readonly stringConverter = new DefaultStringConverter();
 
+    private readonly userIdentityCache = new CachePolicy<GetUserIdentityV1Response>();
+
     public constructor(
         private readonly apiService: ApiService,
         private readonly deviceContainerService: DeviceContainerService,
@@ -39,12 +41,18 @@ export class SessionService {
         private readonly srpService: SrpService,
         private readonly modalService: NgbModal,
         private readonly notificationService: NotificationService,
-    ) {}
+    ) {
+        this.userIdentityCache.timeToLive('relative', 60000);
+    }
 
     public async getUserIdentity(): Promise<GetUserIdentityV1Response> {
-        return this.withRegularSession(
+        return this.userIdentityCache.execute(
             async (): Promise<GetUserIdentityV1Response> => {
-                return this.apiService.regularSessionMethodsApi.getUserIdentityV1();
+                return this.withRegularSession(
+                    async (): Promise<GetUserIdentityV1Response> => {
+                        return this.apiService.regularSessionMethodsApi.getUserIdentityV1();
+                    },
+                );
             },
         );
     }
