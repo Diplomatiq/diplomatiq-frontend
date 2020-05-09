@@ -8,4 +8,7 @@ import { Component, Input } from '@angular/core';
 export class ComponentWrapperComponent {
     @Input()
     public readonly title: string;
+
+    @Input()
+    public readonly subtitle?: string;
 }

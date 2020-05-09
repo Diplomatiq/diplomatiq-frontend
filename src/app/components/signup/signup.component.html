@@ -1,65 +1,65 @@
-<h1>{{ heading }}</h1>
-<p class="text-muted">{{ subheading }}</p>
-<hr />
-<div *ngIf="state === 'signup'">
-    <form (ngSubmit)="signup()">
-        <div class="form-group">
-            <label for="emailAddress">Email address</label>
-            <input
-                type="email"
-                inputmode="email"
-                [(ngModel)]="emailAddress"
-                name="emailAddress"
-                class="form-control"
-                id="emailAddress"
-                aria-describedby="emailAddress"
-                placeholder="Enter your email address"
-                autofocus
-            />
-            <small id="emailHelper" class="form-text text-muted">We'll protect your email address.</small>
-        </div>
-        <div class="form-group">
-            <label>Name</label>
-            <div class="form-row">
-                <div class="col">
-                    <input
-                        type="text"
-                        [(ngModel)]="firstName"
-                        name="firstName"
-                        class="form-control"
-                        placeholder="Enter your first name"
-                    />
-                </div>
-                <div class="col">
-                    <input
-                        type="text"
-                        [(ngModel)]="lastName"
-                        name="lastName"
-                        class="form-control"
-                        placeholder="Enter your last name"
-                    />
-                </div>
+<diplomatiq-frontend-component-wrapper [title]="heading" [subtitle]="subheading">
+    <div *ngIf="state === 'signup'" class="scroll">
+        <form (ngSubmit)="signup()">
+            <div class="form-group">
+                <label for="emailAddress">Email address</label>
+                <input
+                    type="email"
+                    inputmode="email"
+                    [(ngModel)]="emailAddress"
+                    name="emailAddress"
+                    class="form-control"
+                    id="emailAddress"
+                    aria-describedby="emailAddress"
+                    placeholder="Enter your email address"
+                    autofocus
+                />
+                <small id="emailHelper" class="form-text text-muted">We'll protect your email address.</small>
             </div>
-            <small id="nameHelper" class="form-text text-muted">{{ nameHelper }}</small>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input
-                type="password"
-                [(ngModel)]="password"
-                name="password"
-                class="form-control"
-                id="password"
-                placeholder="Enter your password"
-            />
-            <small *ngIf="state === 'signup'" id="passwordHelper" class="form-text text-muted"
-                >Your password is protected by Scrypt and the SRP protocol. But you still have to
-                <strong>choose a strong one!</strong></small
-            >
-        </div>
-        <div>
-            <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Sign up</button>
-            <button type="button" class="btn btn-link" (click)="switchToLogin()">Log in</button>
-        </div>
-    </form>
-</div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md mb-2 mb-md-0">
+                        <label for="firstName">First name</label>
+                        <input
+                            type="text"
+                            [(ngModel)]="firstName"
+                            name="firstName"
+                            class="form-control"
+                            placeholder="Enter your first name"
+                        />
+                    </div>
+                    <div class="form-group col-md mb-0">
+                        <label for="lastName">Last name</label>
+                        <input
+                            type="text"
+                            [(ngModel)]="lastName"
+                            name="lastName"
+                            class="form-control"
+                            placeholder="Enter your last name"
+                        />
+                    </div>
+                </div>
+                <small id="nameHelper" class="form-text text-muted">{{ nameHelper }}</small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    [(ngModel)]="password"
+                    name="password"
+                    class="form-control"
+                    id="password"
+                    placeholder="Enter your password"
+                />
+                <small *ngIf="state === 'signup'" id="passwordHelper" class="form-text text-muted"
+                    >Your password is protected by Scrypt and the SRP protocol. But you still have to
+                    <strong>choose a strong one!</strong></small
+                >
+            </div>
+            <div>
+                <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Sign up</button>
+                <button type="button" class="btn btn-link" (click)="switchToLogin()">Log in</button>
+            </div>
+        </form>
+    </div>
+</diplomatiq-frontend-component-wrapper>

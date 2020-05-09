@@ -4,6 +4,10 @@
     position: fixed;
     z-index: $zindex-notification;
     top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 0 15px;
+
+    @include media-breakpoint-up(md) {
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }

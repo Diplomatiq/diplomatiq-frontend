@@ -1,6 +1,7 @@
 <div id="component-wrapper-root" class="container d-flex flex-column">
     <div id="component-wrapper-header">
         <h1>{{ title }}</h1>
+        <p *ngIf="subtitle !== undefined" class="text-muted">{{ subtitle }}</p>
         <hr />
     </div>
 

@@ -1,9 +1,10 @@
-@mixin full-page-component {
-    :host {
-        width: 100%;
-        height: 100%;
-        flex: 1 0 auto;
-        display: flex;
-        flex-direction: column;
+@mixin full-page-component($from: 'xs', $to: 'lg') {
+    @include media-breakpoint-between($from, $to) {
+        :host {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
     }
 }
