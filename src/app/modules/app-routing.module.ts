@@ -8,6 +8,7 @@ import { SettingsComponent } from '../components/settings/settings.component';
 import { SignupComponent } from '../components/signup/signup.component';
 import { ValidateEmailAddressComponent } from '../components/validate-email-address/validate-email-address.component';
 import { ValidateYourEmailComponent } from '../components/validate-your-email/validate-your-email.component';
+import { ExploreComponent } from '../explore/explore.component';
 import { LoggedInGuard } from '../guards/logged-in.guard';
 import { NotLoggedInGuard } from '../guards/not-logged-in.guard';
 
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: 'validate-your-email', component: ValidateYourEmailComponent, canActivate: [NotLoggedInGuard] },
     { path: 'validate-email-address', component: ValidateEmailAddressComponent, canActivate: [NotLoggedInGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [LoggedInGuard] },
+    { path: 'explore', component: ExploreComponent, canActivate: [LoggedInGuard] },
     { path: 'settings', component: SettingsComponent, canActivate: [LoggedInGuard] },
     { path: 'logout', component: LogoutComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full' },

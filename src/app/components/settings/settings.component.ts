@@ -31,13 +31,19 @@ export class SettingsComponent {
     ) {}
 
     public async deleteAccount(): Promise<void> {
-        const modal = this.modalService.open(DeleteAccountModalComponent);
-        const result: DeleteAccountModalResultEnum = await modal.result;
-        if (result === DeleteAccountModalResultEnum.Confirm) {
-            await this.accountDeletionService.deleteAccount();
-            await this.loginService.logout();
-            await this.router.navigateByUrl('login');
-            this.notificationService.success('Your account has been deleted.');
+        try {
+            const modal = this.modalService.open(DeleteAccountModalComponent);
+            const result: DeleteAccountModalResultEnum = await modal.result;
+            if (result === DeleteAccountModalResultEnum.Confirm) {
+                await this.accountDeletionService.deleteAccount();
+                await this.loginService.logout();
+                await this.router.navigateByUrl('login');
+                this.notificationService.success('Your account has been deleted.');
+            }
+        } catch (ex) {
+            this.notificationService.danger(
+                'Could not delete account. Have you cancelled all your conferences and applications?',
+            );
         }
     }
 

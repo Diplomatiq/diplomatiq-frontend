@@ -18,6 +18,9 @@ import {
     ApplyConferenceV1Request,
     ApplyConferenceV1RequestFromJSON,
     ApplyConferenceV1RequestToJSON,
+    CommitteeWithSeatsWithDelegate,
+    CommitteeWithSeatsWithDelegateFromJSON,
+    CommitteeWithSeatsWithDelegateToJSON,
     DiplomatiqApiError,
     DiplomatiqApiErrorFromJSON,
     DiplomatiqApiErrorToJSON,
@@ -27,6 +30,15 @@ import {
     ElevateRegularSessionInitV1Response,
     ElevateRegularSessionInitV1ResponseFromJSON,
     ElevateRegularSessionInitV1ResponseToJSON,
+    ExploreConferencesV1Response,
+    ExploreConferencesV1ResponseFromJSON,
+    ExploreConferencesV1ResponseToJSON,
+    GetMyConferencesV1Response,
+    GetMyConferencesV1ResponseFromJSON,
+    GetMyConferencesV1ResponseToJSON,
+    GetMyOrganizedConferencesV1Response,
+    GetMyOrganizedConferencesV1ResponseFromJSON,
+    GetMyOrganizedConferencesV1ResponseToJSON,
     GetUserIdentityV1Response,
     GetUserIdentityV1ResponseFromJSON,
     GetUserIdentityV1ResponseToJSON,
@@ -36,11 +48,23 @@ import {
 } from '../models';
 
 export interface SessionMethodsRegularSessionApiApplyConferenceV1Request {
-    applyConferenceV1Request?: ApplyConferenceV1Request;
+    applyConferenceV1Request: ApplyConferenceV1Request;
 }
 
 export interface SessionMethodsRegularSessionApiElevateRegularSessionCompleteV1Request {
     elevateRegularSessionCompleteV1Request: ElevateRegularSessionCompleteV1Request;
+}
+
+export interface SessionMethodsRegularSessionApiGetCountryMatrixV1Request {
+    conferenceId: string;
+}
+
+export interface SessionMethodsRegularSessionApiGetMyConferencesV1Request {
+    includePast: boolean;
+}
+
+export interface SessionMethodsRegularSessionApiGetMyOrganizedConferencesV1Request {
+    includePast: boolean;
 }
 
 export interface SessionMethodsRegularSessionApiOrganizeConferenceV1Request {
@@ -57,6 +81,10 @@ export class SessionMethodsRegularSessionApi extends runtime.BaseAPI {
      * Apply to a conference, to the specified committee place
      */
     async applyConferenceV1Raw(requestParameters: SessionMethodsRegularSessionApiApplyConferenceV1Request): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.applyConferenceV1Request === null || requestParameters.applyConferenceV1Request === undefined) {
+            throw new runtime.RequiredError('applyConferenceV1Request','Required parameter requestParameters.applyConferenceV1Request was null or undefined when calling applyConferenceV1.');
+        }
+
         const queryParameters: runtime.HTTPQuery = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -217,11 +245,131 @@ export class SessionMethodsRegularSessionApi extends runtime.BaseAPI {
     }
 
     /**
+     * Returns such conferences, which are in the future, and has vacant places.
+     * Return conferences which can be applied on
+     */
+    async exploreConferencesV1Raw(): Promise<runtime.ApiResponse<Array<ExploreConferencesV1Response>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/explore-conferences-v1`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ExploreConferencesV1ResponseFromJSON));
+    }
+
+    /**
+     * Returns such conferences, which are in the future, and has vacant places.
+     * Return conferences which can be applied on
+     */
+    async exploreConferencesV1(): Promise<Array<ExploreConferencesV1Response>> {
+        const response = await this.exploreConferencesV1Raw();
+        return await response.value();
+    }
+
+    /**
+     * Returns the country matrix (committee-country assignments) of a conference organized by the user.
+     * Get the country matrix of a conference organized by the user
+     */
+    async getCountryMatrixV1Raw(requestParameters: SessionMethodsRegularSessionApiGetCountryMatrixV1Request): Promise<runtime.ApiResponse<Array<CommitteeWithSeatsWithDelegate>>> {
+        if (requestParameters.conferenceId === null || requestParameters.conferenceId === undefined) {
+            throw new runtime.RequiredError('conferenceId','Required parameter requestParameters.conferenceId was null or undefined when calling getCountryMatrixV1.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.conferenceId !== undefined) {
+            queryParameters['conferenceId'] = requestParameters.conferenceId;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/get-country-matrix-v1`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CommitteeWithSeatsWithDelegateFromJSON));
+    }
+
+    /**
+     * Returns the country matrix (committee-country assignments) of a conference organized by the user.
+     * Get the country matrix of a conference organized by the user
+     */
+    async getCountryMatrixV1(requestParameters: SessionMethodsRegularSessionApiGetCountryMatrixV1Request): Promise<Array<CommitteeWithSeatsWithDelegate>> {
+        const response = await this.getCountryMatrixV1Raw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * Returns the ids of conferences which the user participates in (not organizes).
      * Get the conferences which the user participates in
      */
-    async getMyConferencesV1Raw(): Promise<runtime.ApiResponse<Array<string>>> {
+    async getMyConferencesV1Raw(requestParameters: SessionMethodsRegularSessionApiGetMyConferencesV1Request): Promise<runtime.ApiResponse<Array<GetMyConferencesV1Response>>> {
+        if (requestParameters.includePast === null || requestParameters.includePast === undefined) {
+            throw new runtime.RequiredError('includePast','Required parameter requestParameters.includePast was null or undefined when calling getMyConferencesV1.');
+        }
+
         const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.includePast !== undefined) {
+            queryParameters['includePast'] = requestParameters.includePast;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -256,24 +404,32 @@ export class SessionMethodsRegularSessionApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GetMyConferencesV1ResponseFromJSON));
     }
 
     /**
      * Returns the ids of conferences which the user participates in (not organizes).
      * Get the conferences which the user participates in
      */
-    async getMyConferencesV1(): Promise<Array<string>> {
-        const response = await this.getMyConferencesV1Raw();
+    async getMyConferencesV1(requestParameters: SessionMethodsRegularSessionApiGetMyConferencesV1Request): Promise<Array<GetMyConferencesV1Response>> {
+        const response = await this.getMyConferencesV1Raw(requestParameters);
         return await response.value();
     }
 
     /**
      * Returns the ids of conferences which the user organizes (not participates in).
-     * Get the conferences which the user participates in
+     * Get the conferences which are organized by the user
      */
-    async getMyOrganizedConferencesV1Raw(): Promise<runtime.ApiResponse<Array<string>>> {
+    async getMyOrganizedConferencesV1Raw(requestParameters: SessionMethodsRegularSessionApiGetMyOrganizedConferencesV1Request): Promise<runtime.ApiResponse<Array<GetMyOrganizedConferencesV1Response>>> {
+        if (requestParameters.includePast === null || requestParameters.includePast === undefined) {
+            throw new runtime.RequiredError('includePast','Required parameter requestParameters.includePast was null or undefined when calling getMyOrganizedConferencesV1.');
+        }
+
         const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.includePast !== undefined) {
+            queryParameters['includePast'] = requestParameters.includePast;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -308,15 +464,15 @@ export class SessionMethodsRegularSessionApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GetMyOrganizedConferencesV1ResponseFromJSON));
     }
 
     /**
      * Returns the ids of conferences which the user organizes (not participates in).
-     * Get the conferences which the user participates in
+     * Get the conferences which are organized by the user
      */
-    async getMyOrganizedConferencesV1(): Promise<Array<string>> {
-        const response = await this.getMyOrganizedConferencesV1Raw();
+    async getMyOrganizedConferencesV1(requestParameters: SessionMethodsRegularSessionApiGetMyOrganizedConferencesV1Request): Promise<Array<GetMyOrganizedConferencesV1Response>> {
+        const response = await this.getMyOrganizedConferencesV1Raw(requestParameters);
         return await response.value();
     }
 

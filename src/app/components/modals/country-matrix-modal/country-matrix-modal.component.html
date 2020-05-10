@@ -1,0 +1,48 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Country Matrix</h5>
+        <button type="button" (click)="close()" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngFor="let committee of countryMatrix">
+            <h6>{{ committee.name }} ({{ committee.codeName }})</h6>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Country</th>
+                        <th scope="col">Delegate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let seat of committee.seatsWithDelegate">
+                        <td>{{ getCountryDisplayName(seat.representedCountry) }}</td>
+                        <td
+                            *ngIf="
+                                seat.delegateFirstName === undefined ||
+                                seat.delegateLastName === undefined ||
+                                seat.delegateEmailAddress === undefined
+                            "
+                        >
+                            <fa-icon [icon]="faQuestionCircle"></fa-icon>
+                        </td>
+                        <td
+                            *ngIf="
+                                seat.delegateFirstName !== undefined &&
+                                seat.delegateLastName !== undefined &&
+                                seat.delegateEmailAddress !== undefined
+                            "
+                        >
+                            <p class="mb-0">{{ seat.delegateFirstName }} {{ seat.delegateLastName }}</p>
+                            <p class="text-muted mb-0">{{ seat.delegateEmailAddress }}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer ">
+        <button type="button" (click)="close()" class="btn btn-link">Close</button>
+    </div>
+</div>

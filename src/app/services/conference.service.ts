@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { OrganizeConferenceV1Request } from 'src/openapi/api';
+import {
+    CommitteeWithSeatsWithDelegate,
+    ExploreConferencesV1Response,
+    GetMyConferencesV1Response,
+    GetMyOrganizedConferencesV1Response,
+    OrganizeConferenceV1Request,
+} from '../../openapi/api';
 import { ApiService } from './api.service';
 import { SessionService } from './session.service';
 
@@ -7,20 +13,24 @@ import { SessionService } from './session.service';
     providedIn: 'root',
 })
 export class ConferenceService {
-    constructor(private readonly apiService: ApiService, private readonly sessionService: SessionService) {}
+    public constructor(private readonly apiService: ApiService, private readonly sessionService: SessionService) {}
 
-    public async getMyConferences(): Promise<string[]> {
+    public async getMyConferences(includePast: boolean): Promise<GetMyConferencesV1Response[]> {
         return this.sessionService.withRegularSession(
-            async (): Promise<string[]> => {
-                return this.apiService.regularSessionMethodsApi.getMyConferencesV1();
+            async (): Promise<GetMyConferencesV1Response[]> => {
+                return this.apiService.regularSessionMethodsApi.getMyConferencesV1({
+                    includePast,
+                });
             },
         );
     }
 
-    public async getMyOrganizedConferences(): Promise<string[]> {
+    public async getMyOrganizedConferences(includePast: boolean): Promise<GetMyOrganizedConferencesV1Response[]> {
         return this.sessionService.withRegularSession(
-            async (): Promise<string[]> => {
-                return this.apiService.regularSessionMethodsApi.getMyOrganizedConferencesV1();
+            async (): Promise<GetMyOrganizedConferencesV1Response[]> => {
+                return this.apiService.regularSessionMethodsApi.getMyOrganizedConferencesV1({
+                    includePast,
+                });
             },
         );
     }
@@ -67,6 +77,24 @@ export class ConferenceService {
                         committeeSeatId,
                     },
                 });
+            },
+        );
+    }
+
+    public async getCountryMatrix(conferenceId: string): Promise<CommitteeWithSeatsWithDelegate[]> {
+        return this.sessionService.withRegularSession(
+            async (): Promise<CommitteeWithSeatsWithDelegate[]> => {
+                return this.apiService.regularSessionMethodsApi.getCountryMatrixV1({
+                    conferenceId,
+                });
+            },
+        );
+    }
+
+    public async exploreConferences(): Promise<ExploreConferencesV1Response[]> {
+        return this.sessionService.withRegularSession(
+            async (): Promise<ExploreConferencesV1Response[]> => {
+                return this.apiService.regularSessionMethodsApi.exploreConferencesV1();
             },
         );
     }

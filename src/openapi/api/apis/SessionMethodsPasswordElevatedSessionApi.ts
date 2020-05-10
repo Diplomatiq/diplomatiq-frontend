@@ -30,7 +30,7 @@ import {
 } from '../models';
 
 export interface SessionMethodsPasswordElevatedSessionApiCancelApplicationV1Request {
-    cancelApplicationV1Request?: CancelApplicationV1Request;
+    cancelApplicationV1Request: CancelApplicationV1Request;
 }
 
 export interface SessionMethodsPasswordElevatedSessionApiChangePasswordV1Request {
@@ -51,6 +51,10 @@ export class SessionMethodsPasswordElevatedSessionApi extends runtime.BaseAPI {
      * Cancel an application to a conference
      */
     async cancelApplicationV1Raw(requestParameters: SessionMethodsPasswordElevatedSessionApiCancelApplicationV1Request): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.cancelApplicationV1Request === null || requestParameters.cancelApplicationV1Request === undefined) {
+            throw new runtime.RequiredError('cancelApplicationV1Request','Required parameter requestParameters.cancelApplicationV1Request was null or undefined when calling cancelApplicationV1.');
+        }
+
         const queryParameters: runtime.HTTPQuery = {};
 
         const headerParameters: runtime.HTTPHeaders = {};

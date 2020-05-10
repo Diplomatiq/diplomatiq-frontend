@@ -25,6 +25,10 @@ import { ValidateYourEmailComponent } from '../components/validate-your-email/va
 import { AppInitializerService } from '../services/app-initializer.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AddCommitteeModalComponent } from '../components/modals/add-committee-modal/add-committee-modal.component';
+import { CancelConferenceModalComponent } from '../components/modals/cancel-conference-modal/cancel-conference-modal.component';
+import { CountryMatrixModalComponent } from '../components/modals/country-matrix-modal/country-matrix-modal.component';
+import { ApplyConferenceModalComponent } from '../components/modals/apply-conference-modal/apply-conference-modal.component';
+import { ExploreComponent } from '../explore/explore.component';
 
 function appInitializerFactory(appInitializerService: AppInitializerService): () => Promise<void> {
     return async (): Promise<void> => {
@@ -54,6 +58,10 @@ function appInitializerFactory(appInitializerService: AppInitializerService): ()
         ComponentWrapperComponent,
         OrganizeConferenceModalComponent,
         AddCommitteeModalComponent,
+        CancelConferenceModalComponent,
+        CountryMatrixModalComponent,
+        ApplyConferenceModalComponent,
+        ExploreComponent,
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, NgbModule, FontAwesomeModule],
     providers: [

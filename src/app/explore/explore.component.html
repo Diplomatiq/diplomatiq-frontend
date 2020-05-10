@@ -1,0 +1,36 @@
+<diplomatiq-frontend-component-wrapper [title]="'Apply to a conference'">
+    <div class="row">
+        <div class="col">
+            <ul *ngIf="conferences.length > 0" class="list-group">
+                <li *ngFor="let conference of conferences" class="list-group-item d-flex">
+                    <div class="flex-grow-1">
+                        <h5 class="mb-1">{{ conference.conferenceName }} ({{ conference.conferenceCodeName }})</h5>
+                        <p class="mb-0">
+                            {{ getDisplayedDate(conference.conferenceFrom) }} —
+                            {{ getDisplayedDate(conference.conferenceTo) }}
+                        </p>
+                        <p class="mb-0">
+                            {{ conference.conferenceAddress }}, {{ conference.conferenceCity }},
+                            {{ getCountryDisplayName(conference.conferenceCountry) }},
+                            {{ conference.conferencePostalCode }}
+                        </p>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center ml-3">
+                        <button
+                            (click)="apply(conference)"
+                            class="btn btn-sm btn-outline-primary mb-1"
+                            ngbTooltip="See positions"
+                            placement="top"
+                            container="body"
+                        >
+                            <fa-icon [icon]="faShareSquare"></fa-icon>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+            <div *ngIf="conferences.length === 0">
+                <p>No upcoming conferences found.</p>
+            </div>
+        </div>
+    </div>
+</diplomatiq-frontend-component-wrapper>
