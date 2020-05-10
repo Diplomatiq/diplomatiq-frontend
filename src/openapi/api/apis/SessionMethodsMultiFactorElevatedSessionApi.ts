@@ -15,15 +15,80 @@
 
 import * as runtime from '../runtime';
 import {
+    CancelConferenceV1Request,
+    CancelConferenceV1RequestFromJSON,
+    CancelConferenceV1RequestToJSON,
     DiplomatiqApiError,
     DiplomatiqApiErrorFromJSON,
     DiplomatiqApiErrorToJSON,
 } from '../models';
 
+export interface SessionMethodsMultiFactorElevatedSessionApiCancelConferenceV1Request {
+    cancelConferenceV1Request: CancelConferenceV1Request;
+}
+
 /**
  * no description
  */
 export class SessionMethodsMultiFactorElevatedSessionApi extends runtime.BaseAPI {
+
+    /**
+     * Cancels a conference, unregisters all applied delegates, and deleted conference data.
+     * Cancel a conference
+     */
+    async cancelConferenceV1Raw(requestParameters: SessionMethodsMultiFactorElevatedSessionApiCancelConferenceV1Request): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.cancelConferenceV1Request === null || requestParameters.cancelConferenceV1Request === undefined) {
+            throw new runtime.RequiredError('cancelConferenceV1Request','Required parameter requestParameters.cancelConferenceV1Request was null or undefined when calling cancelConferenceV1.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/cancel-conference-v1`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CancelConferenceV1RequestToJSON(requestParameters.cancelConferenceV1Request),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Cancels a conference, unregisters all applied delegates, and deleted conference data.
+     * Cancel a conference
+     */
+    async cancelConferenceV1(requestParameters: SessionMethodsMultiFactorElevatedSessionApiCancelConferenceV1Request): Promise<void> {
+        await this.cancelConferenceV1Raw(requestParameters);
+    }
 
     /**
      * Deletes the account of the user with all associated data in the system.

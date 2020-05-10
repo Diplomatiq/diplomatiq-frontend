@@ -1,0 +1,169 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Organize a conference</h5>
+        <button type="button" (click)="cancel()" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form [formGroup]="conferenceForm" (ngSubmit)="confirm()">
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group col-lg-8">
+                    <label for="conferenceName">Conference name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="conferenceName"
+                        id="conferenceName"
+                        placeholder="e.g. Budapest International Model United Nations"
+                        required
+                    />
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="conferenceCodeName">Conference code name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="conferenceCodeName"
+                        id="conferenceCodeName"
+                        placeholder="e.g. BIMUN"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="conferenceFrom">Start date</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="conferenceFrom"
+                            id="conferenceFrom"
+                            placeholder="e.g. 2015-04-10"
+                            ngbDatepicker
+                            #conferenceFrom="ngbDatepicker"
+                            [minDate]="getMinFromDate()"
+                            required
+                        />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" (click)="conferenceFrom.toggle()" type="button">
+                                <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col">
+                    <label for="conferenceTo">End date</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="conferenceTo"
+                            id="conferenceTo"
+                            placeholder="e.g. 2015-04-14"
+                            ngbDatepicker
+                            #conferenceTo="ngbDatepicker"
+                            [minDate]="getMinToDate()"
+                            required
+                        />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" (click)="conferenceTo.toggle()" type="button">
+                                <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="conferenceCountry">Country the conference takes place in</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="conferenceCountry"
+                        id="conferenceCountry"
+                        placeholder="e.g. Hungary"
+                        [ngbTypeahead]="search.bind(this)"
+                        [editable]="false"
+                        required
+                    />
+                </div>
+                <div class="form-group col">
+                    <label for="conferenceCity">City the conference takes place in</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="conferenceCity"
+                        id="conferenceCity"
+                        placeholder="e.g. Budapest"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-lg-8">
+                    <label for="conferenceAddress">The address of the conference</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="conferenceAddress"
+                        id="conferenceAddress"
+                        placeholder="e.g. Reáltanoda utca 7."
+                        required
+                    />
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="conferencePostalCode">Postal code</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="conferencePostalCode"
+                        id="conferencePostalCode"
+                        placeholder="e.g. 1053"
+                        required
+                    />
+                </div>
+            </div>
+            <hr class="mt-0 mb-2" />
+            <div class="d-flex justify-content-between align-items-baseline">
+                <h6>
+                    Committees <span *ngIf="committeeList.length > 0">({{ committeeList.length }})</span>
+                </h6>
+                <button type="button" (click)="addCommittee()" class="btn btn-sm btn-link">
+                    Add committee
+                </button>
+            </div>
+            <p *ngIf="committeeList.length === 0">You have not added committees yet.</p>
+            <div *ngIf="committeeList.length > 0" class="card">
+                <ul class="list-group list-group-flush">
+                    <li
+                        *ngFor="let committee of committeeList"
+                        class="list-group-item d-flex align-items-center justify-content-between"
+                    >
+                        <div>
+                            <h6>
+                                {{ committee.name }} ({{ committee.codeName }})
+                                <span class="badge badge-primary">{{ committee.representedCountries.length }}</span>
+                            </h6>
+                            <p class="mb-0">{{ getRepresentedCountryNamesAsCommaSeparatedString(committee) }}</p>
+                        </div>
+                        <button
+                            type="button"
+                            (click)="deleteCommittee(committee)"
+                            class="btn btn-sm btn-outline-danger ml-3"
+                        >
+                            <fa-icon [icon]="faTrashAlt"></fa-icon>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal-footer ">
+            <button type="button" (click)="cancel()" class="btn btn-link">Cancel</button>
+            <button type="submit" [disabled]="!validate()" class="btn btn-primary">
+                Save conference and open application
+            </button>
+        </div>
+    </form>
+</div>

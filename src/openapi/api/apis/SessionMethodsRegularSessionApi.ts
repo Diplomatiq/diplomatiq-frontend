@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    ApplyConferenceV1Request,
+    ApplyConferenceV1RequestFromJSON,
+    ApplyConferenceV1RequestToJSON,
     DiplomatiqApiError,
     DiplomatiqApiErrorFromJSON,
     DiplomatiqApiErrorToJSON,
@@ -27,16 +30,81 @@ import {
     GetUserIdentityV1Response,
     GetUserIdentityV1ResponseFromJSON,
     GetUserIdentityV1ResponseToJSON,
+    OrganizeConferenceV1Request,
+    OrganizeConferenceV1RequestFromJSON,
+    OrganizeConferenceV1RequestToJSON,
 } from '../models';
+
+export interface SessionMethodsRegularSessionApiApplyConferenceV1Request {
+    applyConferenceV1Request?: ApplyConferenceV1Request;
+}
 
 export interface SessionMethodsRegularSessionApiElevateRegularSessionCompleteV1Request {
     elevateRegularSessionCompleteV1Request: ElevateRegularSessionCompleteV1Request;
+}
+
+export interface SessionMethodsRegularSessionApiOrganizeConferenceV1Request {
+    organizeConferenceV1Request: OrganizeConferenceV1Request;
 }
 
 /**
  * no description
  */
 export class SessionMethodsRegularSessionApi extends runtime.BaseAPI {
+
+    /**
+     * Registers a user application to the specified committee place of a conference.
+     * Apply to a conference, to the specified committee place
+     */
+    async applyConferenceV1Raw(requestParameters: SessionMethodsRegularSessionApiApplyConferenceV1Request): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/apply-conference-v1`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ApplyConferenceV1RequestToJSON(requestParameters.applyConferenceV1Request),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Registers a user application to the specified committee place of a conference.
+     * Apply to a conference, to the specified committee place
+     */
+    async applyConferenceV1(requestParameters: SessionMethodsRegularSessionApiApplyConferenceV1Request): Promise<void> {
+        await this.applyConferenceV1Raw(requestParameters);
+    }
 
     /**
      * Completes an authentication flow for the given email address, based on the Secure Remote Password protocol (version 6a). If successful, the current session was elevated to `PasswordElevatedSession` assurance level.
@@ -149,6 +217,110 @@ export class SessionMethodsRegularSessionApi extends runtime.BaseAPI {
     }
 
     /**
+     * Returns the ids of conferences which the user participates in (not organizes).
+     * Get the conferences which the user participates in
+     */
+    async getMyConferencesV1Raw(): Promise<runtime.ApiResponse<Array<string>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/get-my-conferences-v1`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * Returns the ids of conferences which the user participates in (not organizes).
+     * Get the conferences which the user participates in
+     */
+    async getMyConferencesV1(): Promise<Array<string>> {
+        const response = await this.getMyConferencesV1Raw();
+        return await response.value();
+    }
+
+    /**
+     * Returns the ids of conferences which the user organizes (not participates in).
+     * Get the conferences which the user participates in
+     */
+    async getMyOrganizedConferencesV1Raw(): Promise<runtime.ApiResponse<Array<string>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/get-my-organized-conferences-v1`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * Returns the ids of conferences which the user organizes (not participates in).
+     * Get the conferences which the user participates in
+     */
+    async getMyOrganizedConferencesV1(): Promise<Array<string>> {
+        const response = await this.getMyOrganizedConferencesV1Raw();
+        return await response.value();
+    }
+
+    /**
      * Returns the identity of the authenticated user
      * Get the identity of the user
      */
@@ -198,6 +370,64 @@ export class SessionMethodsRegularSessionApi extends runtime.BaseAPI {
     async getUserIdentityV1(): Promise<GetUserIdentityV1Response> {
         const response = await this.getUserIdentityV1Raw();
         return await response.value();
+    }
+
+    /**
+     * Creates a conference with the given committees and the corresponding committee seats, which delegates can apply on.
+     * Create a conference in the system with committees and commitee seats
+     */
+    async organizeConferenceV1Raw(requestParameters: SessionMethodsRegularSessionApiOrganizeConferenceV1Request): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.organizeConferenceV1Request === null || requestParameters.organizeConferenceV1Request === undefined) {
+            throw new runtime.RequiredError('organizeConferenceV1Request','Required parameter requestParameters.organizeConferenceV1Request was null or undefined when calling organizeConferenceV1.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/organize-conference-v1`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: OrganizeConferenceV1RequestToJSON(requestParameters.organizeConferenceV1Request),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Creates a conference with the given committees and the corresponding committee seats, which delegates can apply on.
+     * Create a conference in the system with committees and commitee seats
+     */
+    async organizeConferenceV1(requestParameters: SessionMethodsRegularSessionApiOrganizeConferenceV1Request): Promise<void> {
+        await this.organizeConferenceV1Raw(requestParameters);
     }
 
 }

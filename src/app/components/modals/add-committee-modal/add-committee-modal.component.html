@@ -1,0 +1,71 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Add a committee to the conference</h5>
+        <button type="button" (click)="cancel()" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form [formGroup]="committeeForm" (ngSubmit)="confirm()">
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group col-lg-8">
+                    <label for="committeeName">Committee name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="committeeName"
+                        id="committeeName"
+                        placeholder="e.g. Security Council"
+                        required
+                    />
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="committeeCodeName">Committee code name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="committeeCodeName"
+                        id="committeeCodeName"
+                        placeholder="e.g. SC"
+                        required
+                    />
+                </div>
+            </div>
+            <hr class="mt-0 mb-2" />
+            <div class="d-flex justify-content-between align-items-baseline">
+                <h6>
+                    Represented countries <span *ngIf="countries.length > 0">({{ countries.length }})</span>
+                </h6>
+                <button type="button" (click)="addCountry()" class="btn btn-sm btn-link">
+                    Add country
+                </button>
+            </div>
+            <p *ngIf="countries.length === 0">You have not added countries yet.</p>
+            <div *ngIf="countries.length > 0" formGroupName="countries">
+                <div *ngFor="let country of countries.controls; index as i" class="form-group">
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            class="form-control"
+                            [formControlName]="i"
+                            id="country-{{ i }}"
+                            placeholder="e.g. {{ randomCountries[i] }}"
+                            [ngbTypeahead]="search.bind(this)"
+                            [editable]="false"
+                            required
+                        />
+                        <div class="input-group-append">
+                            <button type="button" (click)="removeCountry(i)" class="btn btn-outline-danger">
+                                <fa-icon [icon]="faTrashAlt"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" (click)="cancel()" class="btn btn-link">Cancel</button>
+            <button type="submit" [disabled]="!validateForm()" class="btn btn-primary">Add committee</button>
+        </div>
+    </form>
+</div>

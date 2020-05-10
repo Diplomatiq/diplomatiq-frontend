@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    CancelApplicationV1Request,
+    CancelApplicationV1RequestFromJSON,
+    CancelApplicationV1RequestToJSON,
     ChangePasswordV1Request,
     ChangePasswordV1RequestFromJSON,
     ChangePasswordV1RequestToJSON,
@@ -25,6 +28,10 @@ import {
     ElevatePasswordElevatedSessionCompleteV1RequestFromJSON,
     ElevatePasswordElevatedSessionCompleteV1RequestToJSON,
 } from '../models';
+
+export interface SessionMethodsPasswordElevatedSessionApiCancelApplicationV1Request {
+    cancelApplicationV1Request?: CancelApplicationV1Request;
+}
 
 export interface SessionMethodsPasswordElevatedSessionApiChangePasswordV1Request {
     changePasswordV1Request: ChangePasswordV1Request;
@@ -38,6 +45,60 @@ export interface SessionMethodsPasswordElevatedSessionApiElevatePasswordElevated
  * no description
  */
 export class SessionMethodsPasswordElevatedSessionApi extends runtime.BaseAPI {
+
+    /**
+     * Cancels a user\'s application to a conference and sends an email to the organizer.
+     * Cancel an application to a conference
+     */
+    async cancelApplicationV1Raw(requestParameters: SessionMethodsPasswordElevatedSessionApiCancelApplicationV1Request): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["ClientId"] = this.configuration.apiKey("ClientId"); // ClientId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["DeviceId"] = this.configuration.apiKey("DeviceId"); // DeviceId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Instant"] = this.configuration.apiKey("Instant"); // Instant authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SessionId"] = this.configuration.apiKey("SessionId"); // SessionId authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["SignedHeaders"] = this.configuration.apiKey("SignedHeaders"); // SignedHeaders authentication
+        }
+
+        const response = await this.request({
+            path: `/cancel-application-v1`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CancelApplicationV1RequestToJSON(requestParameters.cancelApplicationV1Request),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Cancels a user\'s application to a conference and sends an email to the organizer.
+     * Cancel an application to a conference
+     */
+    async cancelApplicationV1(requestParameters: SessionMethodsPasswordElevatedSessionApiCancelApplicationV1Request): Promise<void> {
+        await this.cancelApplicationV1Raw(requestParameters);
+    }
 
     /**
      * Changes the user\'s password to be able to authenticate with the new one.

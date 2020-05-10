@@ -1,4 +1,4 @@
-@mixin full-page-component($from: 'xs', $to: 'lg') {
+@mixin full-page-component($from: 'xs', $to: 'xl') {
     @include media-breakpoint-between($from, $to) {
         :host {
             width: 100%;

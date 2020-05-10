@@ -1,4 +1,8 @@
+export * from './ApplyConferenceV1Request';
+export * from './CancelApplicationV1Request';
+export * from './CancelConferenceV1Request';
 export * from './ChangePasswordV1Request';
+export * from './CommitteeWithSeats';
 export * from './DiplomatiqApiError';
 export * from './ElevateAuthenticationSessionCompleteV1Request';
 export * from './ElevatePasswordElevatedSessionCompleteV1Request';
@@ -9,6 +13,7 @@ export * from './GetSessionV1Request';
 export * from './GetSessionV1Response';
 export * from './GetUserIdentityV1Response';
 export * from './LoginV1Response';
+export * from './OrganizeConferenceV1Request';
 export * from './PasswordAuthenticationCompleteV1Request';
 export * from './PasswordAuthenticationCompleteV1Response';
 export * from './PasswordAuthenticationInitV1Request';
