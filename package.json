@@ -30,7 +30,7 @@
   "dependencies": {
     "@angular-eslint/schematics": "0.0.1-alpha.27",
     "@angular/animations": "~9.1.4",
-    "@angular/common": "~9.1.4",
+    "@angular/common": "~9.1.7",
     "@angular/compiler": "~9.1.4",
     "@angular/core": "~9.1.4",
     "@angular/forms": "~9.1.4",
