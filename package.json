@@ -54,7 +54,7 @@
     "rxjs": "~6.5.5",
     "scrypt-async": "^2.0.1",
     "tslib": "^1.11.2",
-    "tssrp6a": "^1.1.0",
+    "tssrp6a": "^1.1.1",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
